@@ -1,6 +1,6 @@
 # Fulfilment, logistics and storage charges as money: how each is computed, when it posts, where it is recorded
 
-Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page, model, report page or rate card (title + URL + date read); **[opinion]** a named practitioner or vendor; **[research]** published study; **[seat]** this seat's own reasoning, never a position; **[command-verified]** a command run here over the local models clone (`~/ComChatX_Project/scratch/sp-api-plugins/models`, commit db2936aa, 2026-10-29) or over a file downloaded today.
+Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page, model, report page or rate card (title + URL + date read); **[opinion]** a named practitioner or vendor; **[research]** published study; **[seat]** this seat's own reasoning, never a position; **[command-verified]** a command run here over a clone of Amazon's models repository (https://github.com/amzn/selling-partner-api-models, commit db2936aa, 2026-10-29) or over a file downloaded today.
 
 ## What this covers
 
@@ -579,7 +579,7 @@ All dated; never stated by a skill.
 | Monthly inventory storage fees (help 53921) | https://sellercentral.amazon.com/gp/help/external/53921 | 2026-11-09: JS shell; cited via search snippet | [official, snippet] |
 | MWS Finances Fee Types / Datatypes | https://docs.developer.amazonservices.com/en_ES/finances/Finances_FeeTypes.html | 2026-11-09: **DNS failure** (host gone) | [official, unreachable] |
 | Listing playbook research (fee pages read 2026-10-14: G201074400, GC3Q44PBK8BXQW3Z, GV43F6S76Y9DHYRH, GABBX6GZPA8MSZGW, G201411300, GG5KW835AHDJCH8W, G37G73BJXHF75ACH, GL7U4JFSDXUTQAJ, G6WAEPTECPT2JUH3, GAFNWEYTJUV2GBFC, G200680700, GQNVDV46U9JQ25HY, GZGEQLTM3RZXUV6T, G3RZC8DVQCDTCQ3B) | `cx-listing-playbook` origin/main research/angles/inventory-and-fulfillment.md, returns.md | 2026-11-09 (re-read) | [official, reused] |
-| Survey notes 03-job-stock.md, 04-job-money.md, report-full.md | ~/ComChatX_Project/scratch/sp-api-plugins/ | 2026-11-09 | (survey; re-checked where load-bearing) |
+| Survey notes 03-job-stock.md, 04-job-money.md, report-full.md | the sp-api-plugins seat's survey of SP-API for brief 306 (not published) | 2026-11-09 | (survey; re-checked where load-bearing) |
 | ppc.land: per-unit removal billing (Luís Rijo, 2026-02-01) | https://ppc.land/amazon-changes-how-sellers-pay-for-fba-removals-with-per-unit-billing/ | 2026-11-09 | [opinion] |
 | ppc.land: $0.19 rise from 2027-01-15 (2026-11-06) | https://ppc.land/amazon-sellers-face-average-0-19-fba-fee-rise-from-january-15-2027/ | 2026-11-09 (first 40% verbatim) | [opinion] |
 | Nova Analytics: 2027 FBA fee changes (2026-11-06) | https://novadata.io/resources/news/amazon-2027-fba-fee-changes-us | 2026-11-09 | [opinion] |

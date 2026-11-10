@@ -1,6 +1,6 @@
 # Reconciling a settlement or a month: tying Amazon's lines to the bank deposit and to the books
 
-Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page or model (title, URL, date read); **[opinion]** a named practitioner, vendor or developer; **[research]** published study; **[seat]** this seat's reasoning, never a position; **[command-verified]** a command run over the local models clone (`~/ComChatX_Project/scratch/sp-api-plugins/models`, commit db2936aa, 2026-10-29) or over pages fetched today.
+Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page or model (title, URL, date read); **[opinion]** a named practitioner, vendor or developer; **[research]** published study; **[seat]** this seat's reasoning, never a position; **[command-verified]** a command run over a clone of Amazon's models repository (https://github.com/amzn/selling-partner-api-models, commit db2936aa, 2026-10-29) or over pages fetched today.
 
 ## What this covers
 
@@ -479,7 +479,7 @@ None found. No peer-reviewed or institutional study of marketplace settlement re
 | Finance Remittance API; Reconcile payments to invoices | https://developer-docs.amazon/sp-api/docs/finance-remittance-api.md; …/reconcile-remittance-payments.md | 2026-11-09 | official |
 | SP-API changelog RSS; "…New Enum Value for Finances API" (2026-10-21) | https://developer-docs.amazon/sp-api/changelog.rss; …/changelog/sp-api-updates-new-shipment-notification-…-finances-api.md | 2026-11-09 | official |
 | SP-API site index | https://developer-docs.amazon/sp-api/llms.txt | 2026-11-09 | official |
-| Local: Role Mappings (2026-10-28), Role Mappings for types, release notes, deprecations | `scratch/sp-api-plugins/web01/` | 2026-11-09 | official, command-verified |
+| Local: Role Mappings (2026-10-28), Role Mappings for types, release notes, deprecations | saved copies of https://developer-docs.amazon/sp-api/docs/role-mappings.md, its types page, https://developer-docs.amazon/sp-api/docs/sp-api-release-notes.md and https://developer-docs.amazon/sp-api/docs/sp-api-deprecations.md | 2026-11-09 | official, command-verified |
 | Local: financesV0.json, finances_2024-06-19.json, transfers_2024-06-01.json, financesInvoices_2026-06-25.json, financeRemittance-2026-03-17.json, reports_2021-06-30.json | models clone db2936aa | 2026-11-09 | command-verified |
 | Local: survey `04-job-money.md`; listing playbook `research/method/report-lifecycle.md`; door.md | as named | 2026-11-09 | reused |
 | Updated payment reports simplify accrual reporting… (News_Amazon, US, 2026-03-18) | https://sellercentral.amazon.com/seller-forums/discussions/t/0046a66f-915a-4aa1-b343-d8f47ffcc4aa | 2026-11-09 | official |

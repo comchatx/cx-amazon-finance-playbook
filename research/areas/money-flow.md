@@ -5,7 +5,7 @@ Read 2026-11-09 by the research seat. Tags:
 - **[opinion]** A named practitioner or vendor.
 - **[research]** A published study.
 - **[seat]** This seat's own reasoning. It is never a position for a skill.
-- **[command-verified]** A command run by this seat over the local models clone (`~/ComChatX_Project/scratch/sp-api-plugins/models`, commit db2936aa, 2026-10-29) or over saved pages.
+- **[command-verified]** A command run by this seat over a clone of Amazon's models repository (https://github.com/amzn/selling-partner-api-models, commit db2936aa, 2026-10-29) or over saved pages.
 
 How the pages were read:
 - Seller Central help pages are a JavaScript shell to a plain GET in every marketplace tried (.com, .co.uk, -europe, .ca, -japan, .com.au, .in, .ae, .sg, .com.mx, .com.br). Their rules are therefore cited from Amazon staff posts on Seller Forums (server-rendered), Amazon emails that sellers pasted into the forums (labelled as such), sell.amazon.* pages, Amazon-hosted contracts, and the SP-API docs (`developer-docs.amazon/sp-api/docs/<page>.md`, fetched by `curl`).
@@ -828,7 +828,7 @@ All read 2026-11-09. "helper" = read by a helper seat through a summarising fetc
 
 | Title | URL | Tag | Note |
 |---|---|---|---|
-| Local models: finances_2024-06-19, financesV0, transfers_2024-06-01, sellerWallet_2024-03-01, financeRemittance-2026-03-17, reports_2021-06-30; schemas/notifications; schemas/data-kiosk | `~/ComChatX_Project/scratch/sp-api-plugins/models` (db2936aa) | [command-verified] | jq dumps |
+| Local models: finances_2024-06-19, financesV0, transfers_2024-06-01, sellerWallet_2024-03-01, financeRemittance-2026-03-17, reports_2021-06-30; schemas/notifications; schemas/data-kiosk | https://github.com/amzn/selling-partner-api-models (db2936aa) | [command-verified] | jq dumps |
 | Role Mappings for SP-API Operations / Types | `web01/role-mappings.md` (2026-10-28), `role-mappings-for-types.md` | [official] [command-verified] | awk condense |
 | SP-API Release Notes (local copy, updatedAt 2026-11-04); SP-API Deprecations (2026-09-09) | `web01/` | [official] | — |
 | Finances API | https://developer-docs.amazon/sp-api/docs/finances-api.md | [official] | updatedAt 2026-09-09; lists a "June 29, 2026" note not in the local release notes |

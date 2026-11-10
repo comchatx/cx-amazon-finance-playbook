@@ -550,7 +550,7 @@ Dated figures read on 2026-11-09 from vendors' public pages. A skill never state
 | Payment provider notice (2021-02-01) | https://globalselling.amazon.com/news/news-notices-210201 | 2026-11-09 | official |
 | 国家税务总局公告2025年第3号 | https://fgk.chinatax.gov.cn/zcfgk/c100012/c5238152/content.html | 2026-11-09 | official (CN government) |
 | Amazon releases new profit analytics dashboard for sellers (PPC Land) | https://ppc.land/amazon-releases-new-profit-analytics-dashboard-for-sellers/ | 2026-11-09 | opinion [command-verified fetch] |
-| Role Mappings / Role Mappings for types (local copies) | `scratch/sp-api-plugins/web01/role-mappings*.md` (updatedAt 2026-09-09) | 2026-11-09 | official [command-verified] |
+| Role Mappings / Role Mappings for types (local copies) | saved copies of https://developer-docs.amazon/sp-api/docs/role-mappings.md and its types page (updatedAt 2026-09-09) | 2026-11-09 | official [command-verified] |
 | A2X support: deferred adjustments, V1/V2, default mappings, reserves, COGS, FX, MCF | https://support.a2xaccounting.com/en/articles/11698773 (and 1828440, 6008311, 959828, 959816, 1136907, 8871866) | 2026-11-09 | opinion [11698773 command-verified] |
 | A2X: Amazon reserve balances | https://www.a2xaccounting.com/ecommerce-accounting-hub/amazon-reserve-balances | 2026-11-09 | opinion [command-verified] |
 | A2X: DD+7 deferred transactions (Gualano, 2025-08-18) | https://www.a2xaccounting.com/ecommerce-accounting-hub/amazon-dd-7-deferred-transactions-accounting-challenges-and-a2x-workarounds | 2026-11-09 | opinion |
@@ -624,7 +624,7 @@ Dated figures read on 2026-11-09 from vendors' public pages. A skill never state
 | Tsai, Incidence of Platform Fees | https://www.tse-fr.eu/sites/default/files/TSE/documents/conf/2022/postal/tsai_abstract.pdf | 2026-11-09 | research (PDF unreadable; snippet) |
 | Langenmayr & Muddasani CESifo 12713 | https://ideas.repec.org/p/ces/ceswps/_12713.html | 2026-11-09 | research (snippet) |
 | Ads playbook research (overlap: TACoS, FTC ads suit) | `packages/ads-playbook/research/beyond/goals-and-economics.md` | 2026-11-09 | reused |
-| Survey note | `scratch/sp-api-plugins/04-job-money.md` | 2026-11-09 | reused |
+| Survey note 04-job-money.md | the sp-api-plugins seat's survey of SP-API for brief 306 (not published) | 2026-11-09 | reused |
 | 领星 help: 金蝶云星空集成 (created 2023-04-04 per page metadata) | https://www.lingxing.com/help/article/KingdeeIntegration | 2026-11-10 | opinion [command-verified] |
 | 金蝶云产品手册: 凭证模板 | https://help.open.kingdee.com/dokuwiki/doku.php?id=%E5%87%AD%E8%AF%81%E6%A8%A1%E6%9D%BF | 2026-11-10 | opinion (Kingdee's own manual) [command-verified] |
 | 金蝶AI星辰: 跨境电商ERP选型指南 (2025-10-10) | https://www.jdy.com/article/1976537696977367042.html | 2026-11-10 | opinion (Kingdee's own page) [command-verified] |

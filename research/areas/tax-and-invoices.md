@@ -464,7 +464,7 @@ Dated figures. A skill never states these.
 | Announcement for Amazon VAT Transactions Report | https://developer.amazonservices.com/announcement-for-amazon-vat-transactions-report | 2026-11-09 (helper) | [official] |
 | Role Mappings; Role Mappings for Types (local copies) | web01/role-mappings.md, web01/role-mappings-for-types.md | 2026-11-09 | [official, command-verified] |
 | SP-API release notes (local copy) | web01/sp-api-release-notes.md | 2026-11-09 | [official, command-verified] |
-| Models: financesV0, finances_2024-06-19, financesInvoices_2026-06-25, InvoicesApiModel_2024-06-19, shipmentInvoicingV0, orders_2026-01-01; Data Kiosk economics; TaxInvoice* notification schemas | ~/ComChatX_Project/scratch/sp-api-plugins/models (commit db2936aa) | 2026-11-09 | [official, command-verified] |
+| Models: financesV0, finances_2024-06-19, financesInvoices_2026-06-25, InvoicesApiModel_2024-06-19, shipmentInvoicingV0, orders_2026-01-01; Data Kiosk economics; TaxInvoice* notification schemas | https://github.com/amzn/selling-partner-api-models (commit db2936aa) | 2026-11-09 | [official, command-verified] |
 | Marketplace Tax Collection (node 202211260; Amazon.com Customer Service) | https://www.amazon.com/gp/help/customer/display.html?nodeId=202211260 | 2026-11-10 (verifier, full) | [official] |
 | Retail Delivery Fee (node GHY2HYVQF8MKXJH4; Amazon.com Customer Service) | https://www.amazon.com/gp/help/customer/display.html?nodeId=GHY2HYVQF8MKXJH4 | 2026-11-10 (verifier, full) | [official] |
 | Tax on Low Value Imported Goods (LVIG) (node TgfSC5JDtZP0P3cmqU; Amazon.com Customer Service) | https://www.amazon.com/gp/help/customer/display.html?nodeId=TgfSC5JDtZP0P3cmqU | 2026-11-10 (verifier, full) | [official] |

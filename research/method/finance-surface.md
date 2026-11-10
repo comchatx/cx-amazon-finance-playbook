@@ -1,6 +1,6 @@
 # The SP-API surface for money, and what already exists to borrow
 
-Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page or model (title, URL, date read); **[opinion]** a named practitioner, vendor or open-source author; **[research]** published study; **[seat]** this seat's reasoning, never a position; **[command-verified]** a command run over a local or public read-only source. Local model clone: `~/ComChatX_Project/scratch/sp-api-plugins/models`, commit `db2936aa` (2026-10-29, "SPAPI October Release Finance API Rollback"). Scripts used: `/tmp/fsurf/ops.py`, `desc.py`, `defs.py`, `roles.py` (they print each model's paths, parameters, Usage Plan tables, definitions, and the Role Mappings rows).
+Read 2026-11-09 by the research seat. Tags: **[official]** Amazon's own page or model (title, URL, date read); **[opinion]** a named practitioner, vendor or open-source author; **[research]** published study; **[seat]** this seat's reasoning, never a position; **[command-verified]** a command run over a local or public read-only source. Model clone: https://github.com/amzn/selling-partner-api-models, commit `db2936aa` (2026-10-29, "SPAPI October Release Finance API Rollback"). Scripts used (this seat's, not published): `ops.py`, `desc.py`, `defs.py`, `roles.py` (they print each model's paths, parameters, Usage Plan tables, definitions, and the Role Mappings rows).
 
 ## What this covers
 
@@ -720,7 +720,7 @@ None found on the SP-API finance surface itself. Published accounting research o
 
 | Title | URL | Date read | Tag |
 |---|---|---|---|
-| Models clone: finances_2024-06-19, financesV0, transfers_2024-06-01, financesInvoices_2026-06-25, financeRemittance-2026-03-17, sellerWallet_2024-03-01, productFeesV0, sales, orders_2026-01-01, dataKiosk_2023-11-15, notifications schemas, Data Kiosk GraphQL schemas | `~/…/sp-api-plugins/models` @ db2936aa | 2026-11-09 | [command-verified] |
+| Models clone: finances_2024-06-19, financesV0, transfers_2024-06-01, financesInvoices_2026-06-25, financeRemittance-2026-03-17, sellerWallet_2024-03-01, productFeesV0, sales, orders_2026-01-01, dataKiosk_2023-11-15, notifications schemas, Data Kiosk GraphQL schemas | https://github.com/amzn/selling-partner-api-models @ db2936aa | 2026-11-09 | [command-verified] |
 | selling-partner-api-models commits db2936aa, df7c6298 | https://github.com/amzn/selling-partner-api-models | 2026-11-09 | [command-verified] |
 | Role Mappings for SP-API Operations | https://developer-docs.amazon/sp-api/docs/role-mappings.md (saved, updatedAt 2026-10-28) | 2026-11-09 | [official] |
 | Role Mappings for SP-API Types | …/role-mappings-for-types.md (saved, updatedAt 2026-09-09) | 2026-11-09 | [official] |
@@ -737,7 +737,7 @@ None found on the SP-API finance surface itself. Published accounting research o
 | Cancellation of Third-Party Developer SP-API Fees | https://developer.amazonservices.com/cancellation-of-sp-api-fees (2026-06-11 / 2026-07-01) | 2026-11-09 | [official] |
 | Amazon Selling Partner connector | https://claude.com/marketplace/connectors/amazon-selling-partner (saved) | 2026-11-09 | [official] |
 | Amazon gives sellers an even smarter Seller Assistant and a new plugin … | https://www.aboutamazon.com/news/innovation-at-amazon/seller-assistant-plugin-amazon-quick-claude (2026-09-23) | 2026-11-09 | [official] |
-| Amazon plugin 1.0.0 zip | `~/…/sp-api-plugins/amazon-plugin-zip/` | 2026-11-09 | [command-verified] |
+| Amazon plugin 1.0.0 zip | Amazon's "Amazon Selling Partner" Claude plugin as published by Amazon, extracted | 2026-11-09 | [command-verified] |
 | amzn/selling-partner-agentic-toolkit (README; finance-month-end-closer SKILL.md, reconciliation-notes.md) | https://github.com/amzn/selling-partner-agentic-toolkit | 2026-11-09 | [official] |
 | How Amazon seller payments work | https://sell.amazon.com/blog/amazon-seller-payments (2025-07-30) | 2026-11-09 | [official] |
 | Seller Central help G200336920, G201074400, GZ8Y22NL2FSRY8M5, GQNVDV46U9JQ25HY, G201355540, G201062540, G202102230, GLYJTRGQCYNYAZS9 | https://sellercentral.amazon.com/gp/help/external/<id> (and .co.uk copies) | 2026-11-09 | JS shell, unreadable |
@@ -745,11 +745,11 @@ None found on the SP-API finance surface itself. Published accounting research o
 | gs.amazon.cn homepage | https://gs.amazon.cn/ | 2026-11-09 | [official]; no settlement wording |
 | saleweaver/python-amazon-sp-api; amz-tools/amazon-sp-api; GitHub search results; npm `keywords:pi-package` searches | github.com / npm | 2026-11-09 | [command-verified] |
 | cx-amazon-sp-api origin/main (README, SKILL.md, door.md, prompts); brief-305 work tree `fix/305-door-roles-reports` @ 9b6ad9c | local git | 2026-11-09 | [command-verified] |
-| Surface survey notes 01, 02, 04, 07 | `~/…/sp-api-plugins/` | 2026-11-09 | secondary |
+| Surface survey notes 01, 02, 04, 07 | the sp-api-plugins seat's survey of SP-API for brief 306 (not published) | 2026-11-09 | secondary |
 | cx-listing-playbook research (sp-api-access, report-lifecycle, seller-central-only-tools) | origin/main | 2026-11-09 (their reads 2026-10-14) | reused |
 | ads-playbook `beyond/goals-and-economics.md` | local | 2026-11-09 | overlap (§C–D fees; Economics `netProductSales`) |
 | Report Type Values (retention note); Order Reports; FBA Reports; Analytics Reports; Tax Reports; Payment Reports; Settlement Reports (re-read for §J) | https://developer-docs.amazon/sp-api/docs/report-type-values.md (updatedAt 2026-09-10); …/report-type-values-order.md (2026-10-28); …/report-type-values-fba.md (2026-10-13); …/report-type-values-analytics.md (2026-10-28); …/report-type-values-tax.md (2026-11-03); …/report-type-values-payment.md (2026-09-09); …/report-type-values-settlement.md (2026-10-14) | 2026-11-10 | [official] |
-| Models: reports_2021-06-30, finances_2024-06-19, financesV0, transfers_2024-06-01, sales, orders_2026-01-01, ordersV0; Data Kiosk schemas (economics, salesAndTraffic, sellerAnalytics), grep for horizons | `~/…/sp-api-plugins/models` @ db2936aa | 2026-11-10 | [command-verified] |
+| Models: reports_2021-06-30, finances_2024-06-19, financesV0, transfers_2024-06-01, sales, orders_2026-01-01, ordersV0; Data Kiosk schemas (economics, salesAndTraffic, sellerAnalytics), grep for horizons | https://github.com/amzn/selling-partner-api-models @ db2936aa | 2026-11-10 | [command-verified] |
 | Quick Tip: Payments Dashboard – Transaction View (Jessica_Amazon_, 2024-01-16) | https://sellercentral-europe.amazon.com/seller-forums/discussions/t/69b45838-78ce-4403-bfa9-e895f4b89ab4 | 2026-11-10 | [official, Amazon staff] |
 | Quick Tip: Date Range reports (Jessica_Amazon_, 2024-04-17) | https://sellercentral.amazon.com/seller-forums/discussions/t/a53226d8-554a-427d-a0d9-31c52420377d | 2026-11-10 | [official, Amazon staff] |
 | Where to find your Amazon selling reports (KJ_Amazon, 2024-10-31) | https://sellercentral.amazon.com/seller-forums/discussions/t/5a7d44ff-358e-4c39-a6de-e67aff1a2770 | 2026-11-10 | [official, Amazon staff] |

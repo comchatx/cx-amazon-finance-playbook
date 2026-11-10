@@ -5,7 +5,7 @@ Read 2026-11-09 by the research seat. Tags:
 - **[opinion]**: a named practitioner or vendor.
 - **[research]**: a published study.
 - **[seat]**: this seat's reasoning, never a position.
-- **[command-verified]**: a command run over the local models clone (`~/ComChatX_Project/scratch/sp-api-plugins/models`, commit db2936aa, 2026-10-29) or over the saved Amazon pages in `web01/`.
+- **[command-verified]**: a command run over a clone of Amazon's models repository (https://github.com/amzn/selling-partner-api-models, commit db2936aa, 2026-10-29) or over the saved Amazon pages in `web01/`.
 
 **How the web was read.**
 - Plain GET only. No Amazon API host was called, and nothing was POSTed to the help hub.
