@@ -65,6 +65,25 @@ With `skill-creator` installed in Claude Code, its scripts do the rest:
 
 `run_eval.py` writes a temporary command file under the nearest `.claude/` above its working directory, so run it from a scratch directory that has its own `.claude/`. After any change to the fixture, `python3 -I evals/fixture.py <dir> --summary` reprints the graded figures; the tree it writes is the same on every run.
 
-## What was measured
+## What was measured (2026-11-10)
 
-Not yet run.
+Each case was run once per configuration in Claude Code (Opus 5.5), and each run was graded by a `skill-creator` grader against the case's expectations. A baseline run had only the `cx-sources` and `amazon-sp-api` skills: nothing in this package's ground can be reached without the door.
+
+| | With the skills | Baseline |
+|---|---|---|
+| Iteration 1: the skills as first written | 88 of 107 expectations, 82.2% | 69 of 107, 64.5% |
+| Iteration 2: after the analysts' findings, with the stand-in and four expectations fixed | 87 of 107, 81.3% | 73 of 107, 68.2% |
+
+- **The stand-in.** In iteration 1, the stand-in read `--body` as literal JSON or `@file`, while the door takes a file. Every fee estimate, `createReport` and Data Kiosk query failed in both configurations, which lowered the baseline most.
+- **The expectations fixed for iteration 2.**
+  - Case 12's seller asks for a payout, so an `initiatePayout` that is sent and refused now passes.
+  - Case 23 asks where the refund administration fee's terms are read, since no run reaches Amazon's pages.
+  - Case 42 accepts cost counted on net units, once the answer names that basis.
+- **The analysts' findings** moved load-bearing facts into the bodies:
+  - `money-flow`: released and deferred lines, the open group, `PAID`'s open meaning, `maturityDate`;
+  - `fees-and-charges`: account-level charges and date bases;
+  - `refunds-and-reimbursements`: the reversal's linking columns;
+  - the matching lines in the other skills.
+- **How far the figures can be read.** One run per configuration leaves the per-case figures noisy, and six cases moved down between iterations with the skills' facts unchanged or added to. Most of iteration 2's with-skill misses come from a run's own arithmetic choices: refunds matched by order instead of by posting, a returned unit restocked, or a charge placed on one product. A few come from a fact the answer left out although the skill states it: the meaning of `PAID` for case 12, and the Economics role for cases 41 and 42.
+
+The trigger queries in `triggers/` have not been run through `skill-creator`'s description loop. The sponsored-ads playbook's loop, run on the same machine, loaded each skill on few of its should-trigger queries beside the machine's many other skills, and moved little. A box's pi lists skills its own way.
