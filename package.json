@@ -1,7 +1,7 @@
 {
   "name": "@comchatx/cx-amazon-finance-playbook",
   "version": "0.1.0",
-  "description": "Shows where your Amazon money is and what each product earned.",
+  "description": "Ties out your Amazon payouts and finds what each product earned.",
   "license": "MIT",
   "author": "ComChatX",
   "homepage": "https://github.com/comchatx/cx-amazon-finance-playbook#readme",
@@ -34,7 +34,7 @@
   },
   "comchatx": {
     "name": "Amazon Finance Playbook",
-    "about": "看清你在亚马逊的钱在哪，以及每个产品赚了多少。",
+    "about": "对上亚马逊的每笔回款，算清每个产品赚了多少。",
     "mark": {
       "line": "table"
     },
