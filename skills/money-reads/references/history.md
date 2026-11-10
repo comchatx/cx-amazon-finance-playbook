@@ -4,7 +4,7 @@
 
 - Of the API finance reads, only v0 `listFinancialEventsByGroupId` states a history limit, "the past two years", with an empty response past it (P-api-33).
 - `listTransactions`, `listFinancialEvents`, `listFinancialEventsByOrderId`, `listFinancialEventGroups`, `listBalances` (`asOfDate`), `listSummary` and `listPayouts` state no earliest date; where a limit is stated, it is a 180-day span per call; read in Amazon's documents, not yet seen on a live account (P-api-33).
-- Through the API alone a settlement report is reachable only within the 90 days `getReports` lists (P-api-30).
+- Amazon states that settlement reports "cannot be requested or scheduled" and that `getReports` lists reports of the last 90 days, so through the API alone a settlement report is retrievable only inside that window (P-api-30).
 - The Deferred Transaction Report covers up to 10 years but lists only what is deferred when it is generated; `listBalances` with `asOfDate` and `balanceType=DEFERRED` gives the deferred amount at a past date (P-api-35).
 
 ## Product and order reads

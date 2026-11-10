@@ -12,6 +12,7 @@
 - Amazon EU S.à r.l. supplies EU and UK seller services from August 2024. (P-tax-13)
 - Sellers established in some countries are invoiced by the local branch with local VAT; others are invoiced by the Luxembourg head office. (P-tax-13)
 - Which establishments are invoiced with local VAT is read in News_Amazon's "Update to Amazon UK and EU agreements and VAT treatment". (P-tax-13)
+- The tax on each estimated fee is `TaxAmount` in `getMyFeesEstimateForSKU`, `getMyFeesEstimateForASIN` and `getMyFeesEstimates`, and ads and deal events carry their own tax field. (P-sell-14)
 - The tax actually charged on each fee is read from Data Kiosk `createQuery` on `analytics_economics_2024_03_15` (`taxAmount`); which role the Economics dataset needs, and whether Finances v0 EU/UK fee lines are net or gross of that VAT, are read in Amazon's documents, not yet seen on a live account. (P-tax-13, P-tax-14)
 - Amazon Ads are invoiced separately from selling fees. (P-tax-13)
 - VAT Services on Amazon ended in October 2024; `VatAmazonTechnologyFee`, `VatFiscalRepFee` and `VatPartnerFee` lines are a closed history. (P-tax-21)

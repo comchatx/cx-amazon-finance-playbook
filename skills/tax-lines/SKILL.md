@@ -5,29 +5,33 @@ description: "The tax inside an Amazon seller's money: sales tax, VAT and GST li
 
 ## Tax lines
 
-- A tax line is buyer tax the seller keeps and owes, buyer tax Amazon withholds and remits, tax Amazon deducts from the seller, or tax on Amazon's fee. (P-tax-1)
-- `MarketplaceFacilitatorTax-*` and `MarketplaceFacilitatorVAT-*` withheld lines offset the buyer-side tax on the same item, so that tax does not reach the payout (Finances v0; A2X: "results in a total of 0"). (P-tax-2)
-- `Standard`-model tax is "paid to the seller and not remitted … by Amazon": in the payout, the seller's to remit. (P-tax-3)
+- `MarketplaceFacilitatorTax-*` and `MarketplaceFacilitatorVAT-*` withheld lines offset the buyer-side tax on the same item, so that tax does not reach the payout. (P-tax-2)
+- `Standard`-model tax is "paid to the seller and not remitted … by Amazon": the seller's to remit. (P-tax-3)
 - Who remits is stated per item in Orders `taxCollections[]`, the sales tax report, VCS and the AVTR; Orders returning it without a restricted role is read in Amazon's documents, not yet seen on a live account. (P-tax-4)
-- An Economics fee total includes tax on the fee: `totalAmount = amount - promotionAmount + taxAmount`. (P-tax-14)
-- A2X, Link My Books and Lingxing describe booking Amazon-collected tax excluded or as gross revenue plus a liability, fee VAT as cost or recoverable, profit VAT-inclusive or exclusive; each changes revenue and margin, not the payout. (P-tax-29)
+- A2X, Link My Books and Lingxing describe collected tax and fee VAT booked either way (excluded or revenue plus liability; cost or recoverable): margin changes, the payout does not. (P-tax-29)
+
+## Tax on Amazon's fees
+
+- EU/UK sellers established in a country News_Amazon's "Update to Amazon UK and EU agreements and VAT treatment" lists are invoiced by Amazon's local branch with local VAT; others by its Luxembourg head office. (P-tax-13)
+- Each fee's tax is its own field: `TaxAmount` in `getMyFeesEstimateForSKU`, Data Kiosk economics `taxAmount`, deal and ads events. (P-sell-14, P-tax-14)
 
 ## Documents
 
-- The US 1099-K is "unadjusted gross sales": tax and shipping in, fees and refunds not deducted; its threshold is read on the IRS page "Form 1099-K FAQs: General information". (P-tax-7, P-tax-8)
-- The US sales tax report, EU/UK VAT reports, India's MTRs and Brazil's invoice APIs need Tax Invoicing or Tax Remittance (Restricted), roles sellers do not tick today. (P-tax-9, P-tax-10)
+- The US 1099-K is "unadjusted gross sales": tax and shipping in, fees and refunds not deducted; US persons only; threshold on the IRS page "Form 1099-K FAQs: General information". (P-tax-7, P-tax-8)
+- The US sales tax report "cannot be requested or scheduled": generated in the Tax Document Library, it needs Tax Remittance (Restricted). (P-tax-9)
+- EU/UK VAT reports, India's MTRs and Brazil's invoice APIs need Tax Invoicing or Tax Remittance (Restricted), roles sellers do not tick today. (P-tax-10)
 
 ## Beyond Amazon's collection
 
-- Amazon does not collect Washington B&O, Ohio CAT or Texas franchise tax; the seller files each where its nexus test (physical presence, or a receipts, property or payroll threshold) is met. (P-tax-31)
-- By STA 2025 No. 15 a platform reports income gross of VAT and of its fees; Amazon's quarterly China tax report, as China Daily, Zhonglun and AMZ123 relay it, follows this: not the payout. (P-tax-34, P-tax-35, P-tax-36)
+- The seller, not Amazon, files Washington B&O, Ohio CAT and Texas franchise tax; each has its own nexus test. (P-tax-31)
+- Amazon's quarterly China tax report, as China Daily, Zhonglun and AMZ123 relay it, follows STA 2025 No. 15: income gross of VAT and of fees, not the payout. (P-tax-34, P-tax-35, P-tax-36)
 
 ## References
 
 - references/lines.md: line kinds, columns, counting choices.
-- references/reads.md: reads per role, fee invoices.
-- references/us.md: facilitator tax, 1099-K, state taxes.
-- references/eu-uk.md: deemed supplier, fee VAT, AVTR, Pan-EU.
+- references/reads.md: reads per role, Tax Document Library, fee invoices.
+- references/us.md: facilitator tax, 1099-K, state taxes, stock location.
+- references/eu-uk.md: deemed supplier, fee VAT, VCS, AVTR, Pan-EU.
 - references/other-marketplaces.md: India, Mexico, Brazil, Japan, others.
 - references/china.md: China tax report, exports.
 - references/imports.md: importer of record, import VAT.

@@ -5,7 +5,7 @@
 - `GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2` is the settlement report that remains, and Role Mappings for Types name Finance and Accounting for it (P-api-15, P-tool-26).
 - The SP-API Deprecation Schedule, as read on 2026-11-09, lists the v1 and XML settlement reports for removal on 2026-11-11; the current state is read on that page (P-api-15).
 - The V2 columns are the 24 Amazon lists; amounts sit in one `amount` column, described by `amount-type` and `amount-description` (P-api-16).
-- Through the API alone a settlement report is reachable only within the 90 days `getReports` lists (P-api-30).
+- Amazon states that settlement reports "cannot be requested or scheduled" and that `getReports` lists reports of the last 90 days, so through the API alone a settlement report is retrievable only inside that window (P-api-30).
 
 ## Deferred Transaction Report
 

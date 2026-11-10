@@ -5,31 +5,30 @@ description: "What each charge Amazon takes from a seller is, how it is worked o
 
 ## Selling fees
 
-- The referral fee is the greater of a category percentage of the total sales price (item, delivery, gift wrap) and any per-item minimum (none for media, some grocery categories and Amazon.com.au), both on the marketplace's pricing page. (P-sell-1, P-sell-4, P-sell-39)
-- On a refund the referral fee is credited back minus a refund administration fee. (P-sell-7)
-- `Commission` is the referral fee, `FixedClosingFee` the Individual per-item fee, `VariableClosingFee` the media closing fee. (P-sell-9)
-- The digital services fee is a percentage of Selling on Amazon fees, and in stated cases FBA fees, not of sales. (P-sell-13)
-- Coupon fees are separate from the coupon budget funding the discount. (P-sell-15)
-- Advertising reaches the finance events only if deducted from the selling balance (the default), as invoice-level `ProductAdsPaymentEvent` or the settlement "Cost of Advertising" line, neither per ASIN. (P-sell-23)
+- The referral fee is the greater of a category percentage of the total sales price and any per-item minimum, on the marketplace's pricing page. (P-sell-1, P-sell-4, P-sell-39)
+- On a refund the referral fee is credited back minus a refund administration fee, the lesser of a fixed amount and a percentage of the referral fee, by marketplace; research/areas/selling-fees.md, P-sell-7, holds the percentages as read. (P-sell-7)
+- Advertising posts only when deducted from the selling balance, invoice-level, not per ASIN. (P-sell-23)
 
-## Fulfilment and storage
+## Fulfilment, storage and account charges
 
-- The FBA fulfilment fee is charged per unit at shipment, at the ship date's rate. (P-ful-1)
-- Monthly storage is collected the following month as an account-level line; `GET_FBA_STORAGE_FEE_CHARGES_DATA` estimates it per product. (P-ful-3)
-- The inbound placement fee is fixed on confirming a placement option, quoted in `listPlacementOptions`, and posted in `listTransactions` weeks after receipt; no SP-API report itemises it. (P-ful-6)
-- A period's fulfilment and storage total holds earlier periods' charges, so it is not the fulfilment cost of that period's sales; booking them by posting date, covered period, amortisation or share is the seller's choice. (P-ful-21)
+- The FBA fulfilment fee is charged per unit at the ship date's rate. (P-ful-1)
+- Monthly storage is an account-level charge with no order, collected the month after the one it covers; `GET_FBA_STORAGE_FEE_CHARGES_DATA` estimates it per product. (P-ful-3)
+- The subscription is a monthly account fee, not a per-unit fee. (P-sell-11)
+- The inbound placement fee posts in `listTransactions` weeks after receipt; `listPlacementOptions` quotes it, and no SP-API report itemises it. (P-ful-6)
+- In Amazon's model, the order-scoped reads examined carry no storage, placement or capacity charge; read in Amazon's model, not yet seen on a live account. (P-ful-17)
+- A period's fulfilment and storage total holds earlier periods' charges; booking them by posting date, covered period or amortisation, or by volume, units or sales share, is the seller's choice. (P-ful-21)
 
-## Labels and estimates
+## Dates and estimates
 
-- Amazon publishes no closed list of `breakdownType`, `FeeType` or `amount-description` values. (P-sell-26, P-ful-15)
-- A fee estimate (Product Fees, Fee Preview, `economicsPreview`) is per unit at one price, without program fees, subscription, high-volume listing fee, refund administration or advertising. (P-sell-29)
-- Product Fees estimates are "not guaranteed" and leave out storage, placement, removal and returns fees. (P-sell-30, P-ful-19)
+- Amazon's Date Range reports date transactions by posting, which "may not correspond to the order date or the shipment date"; vendors document order-date and settlement-date profits differing by date basis. (P-rec-17, P-prof-27)
+- A fee estimate (Product Fees, Fee Preview, `economicsPreview`) is per unit at one price, without program fees, subscription, high-volume listing, refund administration or advertising. (P-sell-29)
+- Product Fees estimates are "not guaranteed" and omit storage, placement, removal and returns fees. (P-sell-30, P-ful-19)
 
 ## References
 
-- references/selling-fees.md: referral, refunds, closing, subscription, digital services, tax on fees, fee changes.
+- references/selling-fees.md: referral, refund administration, closing, subscription, digital services, tax on fees, fee changes.
 - references/program-fees.md: coupons, deals, Vine, ads, EPR, Haul.
-- references/fulfilment-charges.md: fulfilment, surcharges, storage, placement, returns, removal, capacity, timing.
+- references/fulfilment-charges.md: fulfilment, measured size tiers, dimension claims, peak window, storage, placement, returns, removal, capacity.
 - references/inbound-freight.md: AGL, SEND, Freight, GWD.
 - references/where-fees-land.md: event lists, labels, economics, estimates, roles.
 - ../product-earnings/SKILL.md: spreading charges over products.

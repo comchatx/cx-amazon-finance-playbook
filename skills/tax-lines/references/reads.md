@@ -31,6 +31,7 @@
 
 - The Invoices API v2026-06-25 is "Vendors only". (P-tax-12)
 - No SP-API operation found returns the invoices Amazon issues to sellers for selling, FBA or other fees; those sit in Seller Central. (P-tax-12)
+- The tax on each estimated fee is `TaxAmount` in `getMyFeesEstimateForSKU`, `getMyFeesEstimateForASIN` and `getMyFeesEstimates`; Product Fees accept Pricing. (P-sell-14, P-sell-33)
 - Whether VAT was charged on each fee is read from Data Kiosk `createQuery` on `analytics_economics_2024_03_15` (`taxAmount`); which role the Economics dataset needs, and whether Finances v0 EU/UK fee lines are net or gross of that VAT, are read in Amazon's documents, not yet seen on a live account. (P-tax-13)
 
 ## How a read is made

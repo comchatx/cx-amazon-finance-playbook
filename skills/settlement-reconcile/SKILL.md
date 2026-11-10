@@ -6,30 +6,31 @@ description: "Reconciling Amazon's money to the bank deposit and the books: the 
 ## Settlement report
 
 - Amazon generates settlement reports, found with `getReports` (`GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2`), not requested. (P-rec-1)
-- The API lists no settlement older than about 90 days; older ones are in Seller Central. (P-rec-6)
+- The API lists settlements back about 90 days; older ones are in Seller Central. (P-rec-6)
 - Per practitioners, account-level rows (storage, subscription, reserve, reimbursement) have empty `sku` and `order-id`; a SKU filter drops them. (P-rec-29)
 
 ## Payout to bank
 
 - A closed financial event group's `OriginalTotal` is the payout or a charge, and `ConvertedTotal` the disbursed-currency total, read in Amazon's model, not yet seen on a live account. (P-rec-10, P-rec-24)
-- Amazon's recipe for a payment's lines is `listTransactions` by `FINANCIAL_EVENT_GROUP_ID` with `transactionStatus=RELEASED`; whether they sum to the settlement V2 total, or only with `DEFERRED_RELEASED`, is read in Amazon's documents, not yet seen on a live account. (P-rec-11)
-- `listTransactions` filters by group or `ORDER_ID` per model and reference; a release note's `SETTLEMENT_ID` filter is read in Amazon's documents, not yet seen on a live account. (P-rec-12)
+- A payment's lines are `listTransactions` by `FINANCIAL_EVENT_GROUP_ID` with `transactionStatus=RELEASED`; whether they sum to the settlement V2 total, or only with `DEFERRED_RELEASED`, is read in Amazon's documents, not yet seen on a live account. (P-rec-11)
 
 ## Why figures differ
 
 - A settlement holds released money; deferred ones enter on release. (P-rec-8)
-- Settlement V2's `posted-date-time` is UTC; Date Range reports and `listSummary` use local time. (P-rec-15)
-- Date Range reports count posted transactions, deferred included, since 2026, for periods from 2025-01-01; Business Reports count orders by order date. (P-rec-31, P-rec-18)
+- `listBalances` returns `DEFERRED` and reserve balances now or as of a past date (`asOfDate`), such as a month end; the Deferred Transaction Report lists only current deferrals. (P-rec-14, P-rec-20)
+- Settlement `posted-date-time` is UTC; Date Range reports and `listSummary` use local time. (P-rec-15)
+- Date Range reports count posted transactions, deferred included, since 2026, for periods from 2025-01-01; Business Reports count by order date. (P-rec-31, P-rec-18)
 - Card- or invoice-paid ads and, per search snippets of Amazon's page, AGL paid by wire sit outside the settlement; Amazon Shipping bills in Shipper Central, and whether each also posts as an Adjustment is read in Amazon's documents, not yet seen on a live account. (P-rec-42, P-rec-44, P-rec-45)
 
 ## Booking
 
-- A month-crossing settlement is booked whole or split by month; practitioners describe a clearing account, gross or net, the reserve as an asset (calling P&L booking an error) and a deferral accrual, each a seller's choice changing the P&L or balance sheet, none Amazon's rule. (P-rec-32, P-rec-33, P-tool-13)
+- A settlement crossing month end is booked whole on its period or split by each line's posting month, as the seller chooses. (P-rec-32)
+- Practitioners describe a clearing account, gross or net, reserves as a current asset and a deferral accrual: seller's choices changing the P&L or balance sheet, none Amazon's rule. (P-rec-33)
 
 ## References
 
 - references/settlement-report.md: V2 columns, rows, archive.
-- references/payouts-and-transactions.md: groups, transactions, payouts.
+- references/payouts-and-transactions.md: groups, transactions, balances, payouts.
 - references/timing-and-deferral.md: clocks, deferral, reserves.
 - references/outside-the-settlement.md: charges billed elsewhere.
 - references/accounts-and-stores.md: regions, stores.
