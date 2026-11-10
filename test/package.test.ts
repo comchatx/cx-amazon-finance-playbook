@@ -11,12 +11,16 @@ const PROMPTS = ["fees-review", "money-where", "product-earnings", "refunds-revi
 const skillFile = (name: string) => join(ROOT, "skills", name, "SKILL.md");
 const manifest = () => JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as Record<string, unknown>;
 
-it("the pinned pi loads seven skills and five templates from the package, and nothing else", async () => {
+// The Plugins page lists a skill or template only when its description is English: no letter, mark or punctuation of another script.
+const NOT_LATIN = /[^\p{Script=Latin}\p{Script=Common}\p{Script=Inherited}]|[\u3000-\u303F\uFF00-\uFFEF]/u;
+
+it("the pinned pi loads seven skills and five templates from the package, and nothing else, each described in Latin script", async () => {
   const { loader } = await loadPackage(ROOT);
   const skills = loader.getSkills();
   const prompts = loader.getPrompts();
   expect(skills.diagnostics).toEqual([]);
   expect(prompts.diagnostics).toEqual([]);
+  for (const one of [...skills.skills, ...prompts.prompts]) expect(one.description, one.name).not.toMatch(NOT_LATIN);
   expect(skills.skills.map((skill) => skill.name).sort()).toEqual([...SKILLS]);
   expect(skills.skills.map((skill) => skill.filePath).sort()).toEqual(SKILLS.map(skillFile));
   expect(prompts.prompts.map((prompt) => prompt.name).sort()).toEqual([...PROMPTS]);
