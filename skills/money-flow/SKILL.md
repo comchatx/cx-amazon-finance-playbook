@@ -14,7 +14,7 @@ description: "Where an Amazon seller's money is between the order and the bank: 
 
 - `listBalances` returns `AVAILABLE`, `DEFERRED`, `ACCOUNT_LEVEL_RESERVE`, `RESERVED` and `TOTAL`, with no reason field; Statement View shows each reserve's reason. (P-flow-21, P-flow-40, P-flow-9)
 - An `Open` group in `listFinancialEventGroups` holds the current balance in `OriginalTotal`; Amazon lists a payout's transactions by `listTransactions` with its `FinancialEventGroupId`. (P-flow-17, P-flow-18)
-- Monthly storage is an account-level charge with no order, collected the month after it accrues; the order-scoped reads examined carry no such charge, group-scoped reads do. (P-ful-3, P-ful-17)
+- Monthly storage, an account-level charge, is collected the following month; group-scoped reads carry it; whether order-scoped reads do is read in Amazon's model, not yet seen on a live account. (P-ful-3, P-ful-17)
 
 ## Payouts
 
@@ -25,7 +25,7 @@ description: "Where an Amazon seller's money is between the order and the bank: 
 
 ## References
 
-- references/deferral.md: the path from order to bank, the reserve policy and its dates, invoiced orders.
+- references/deferral.md: the path from order to bank, the reserve policy, invoiced orders.
 - references/reserves.md: the Account Level Reserve's reasons, circulated formulas, balance types.
 - references/payouts.md: cycle, on-demand payouts, negative balance, bank changes, newer stores.
 - references/holds.md: funds withheld, deactivation, reviews, court freezes.

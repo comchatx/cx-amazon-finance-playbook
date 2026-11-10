@@ -77,6 +77,10 @@ it("P-tool-34 and P-tool-35 enter without their last clauses, which are the seat
   }
 });
 
+it("P-tax-44 enters without the seat's premise that Amazon's fees carry no Chinese 发票", () => {
+  for (const { file, line, ids } of lines) if (ids.includes("P-tax-44")) expect(line, file).not.toMatch(/no Chinese 发票|outside China/);
+});
+
 /** Every skill file whole, its frontmatter and headings included. */
 const files = markdown(join(ROOT, "skills")).map((file) => ({ file, text: readFileSync(file, "utf8") }));
 

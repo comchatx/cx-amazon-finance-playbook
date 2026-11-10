@@ -7,7 +7,7 @@
 
 ## Data Kiosk economics
 
-- Data Kiosk economics `taxAmount` is a further tax face; Role Mappings name Brand Analytics for it and Amazon's correction names Selling Partner Insights, read in Amazon's documents, not yet seen on a live account. (P-tax-11)
+- Data Kiosk economics `taxAmount` is a further tax face; Role Mappings name Brand Analytics for it and Amazon's correction names Selling Partner Insights, read in Amazon's documents, not yet seen on a live account. (P-tax-14, P-api-23)
 
 ## On Amazon Fulfillment
 

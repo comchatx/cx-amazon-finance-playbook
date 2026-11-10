@@ -55,7 +55,7 @@
 
 ## Amazon's fees in a Chinese ledger
 
-- Amazon's fees come from Amazon entities outside China and carry no Chinese 发票. (P-tax-44)
+- Which voucher supports an Amazon charge in a Chinese ledger depends on who issued that charge; references/eu-uk.md says which Amazon entity invoices EU and UK seller fees, and references/reads.md where Amazon's fee invoices are. (P-tax-44)
 - For a Chinese enterprise, spending on services bought from abroad is deducted on "对方开具的发票或者具有发票性质的收款凭证" (the other party's invoice or a receipt with invoice character). (P-tax-44)
 - The tax authority may ask for confirmation by a foreign notary or CPA. (P-tax-44)
 - No SP-API operation found returns the invoices Amazon issues to sellers for its fees; they sit in Seller Central, and references/reads.md holds the detail. (P-tax-12)

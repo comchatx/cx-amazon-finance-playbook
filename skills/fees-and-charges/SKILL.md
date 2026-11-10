@@ -12,10 +12,10 @@ description: "What each charge Amazon takes from a seller is, how it is worked o
 ## Fulfilment, storage and account charges
 
 - The FBA fulfilment fee is charged per unit at the ship date's rate. (P-ful-1)
-- Monthly storage is an account-level charge with no order, collected the month after the one it covers; `GET_FBA_STORAGE_FEE_CHARGES_DATA` estimates it per product. (P-ful-3)
-- The subscription is a monthly account fee, not a per-unit fee. (P-sell-11)
+- Monthly storage is an account-level charge with no order, collected the following month; `GET_FBA_STORAGE_FEE_CHARGES_DATA` estimates it per product. (P-ful-3)
+- The subscription is a monthly account fee, not per unit. (P-sell-11)
 - The inbound placement fee posts in `listTransactions` weeks after receipt; `listPlacementOptions` quotes it, and no SP-API report itemises it. (P-ful-6)
-- In Amazon's model, the order-scoped reads examined carry no storage, placement or capacity charge; read in Amazon's model, not yet seen on a live account. (P-ful-17)
+- `ServiceFeeEvent` has an order id and SKU; whether storage, placement or capacity charges reach order-scoped reads is read in Amazon's model, not yet seen on a live account. (P-ful-17)
 - A period's fulfilment and storage total holds earlier periods' charges; booking them by posting date, covered period or amortisation, or by volume, units or sales share, is the seller's choice. (P-ful-21)
 
 ## Dates and estimates

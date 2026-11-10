@@ -23,7 +23,7 @@
 - VCS keeps VAT-inclusive prices in the price feed. (P-tax-16)
 - Since June 2026 VCS calculates VAT per shipment by rate, not per unit. (P-tax-16)
 - Sellers who invoice themselves upload within the limit stated on Amazon's page "VCS Best Practices". (P-tax-16)
-- Amazon calculates no VAT on a shipment from a country where the seller's VAT number is missing; the seller computes it and uploads the invoice, which Amazon does not validate. (P-tax-15)
+- Amazon calculates no VAT on a shipment from a country where the seller's VAT number is missing; the seller computes it and uploads the invoice, and Amazon does not validate that invoice's `TotalAmount` and `TotalVATAmount` fields. (P-tax-15)
 
 ## Amazon VAT Transactions Report
 

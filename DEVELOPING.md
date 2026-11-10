@@ -23,7 +23,7 @@ Each template's `description:` is one English sentence; its Chinese is `comchatx
 
 How a call is made and how a report is asked for and landed is the `amazon-sp-api` skill's (`references/door.md`), never this package's. `@comchatx/cx-amazon-ads` is optional: where the seller has it, it reads each product's ad spend. What an ad sale earns against its cost is `@comchatx/cx-sponsored-ads-playbook`'s, and stock and restocking are `@comchatx/cx-amazon-stock-playbook`'s; nothing of theirs is written here.
 
-Seven positions are the writing seats' own reasoning and no skill cites them: P-api-29, P-flow-35, P-rec-37, P-ref-30, P-ref-51, P-sell-41 and P-sell-52. P-tool-34 and P-tool-35 enter without their last clauses, which are the seat's own.
+Seven positions are the writing seats' own reasoning and no skill cites them: P-api-29, P-flow-35, P-rec-37, P-ref-30, P-ref-51, P-sell-41 and P-sell-52. P-tool-34 and P-tool-35 enter without their last clauses, and P-tax-44 without its premise that Amazon's fees carry no Chinese 发票: those are the seat's own.
 
 A value that differs by marketplace or year (a fee rate, a reserve or payout schedule, a tax rate, a threshold or a filing date) is in no line of a skill: the line says where it is read, and the research keeps the value as it was read, with its marketplace and date.
 

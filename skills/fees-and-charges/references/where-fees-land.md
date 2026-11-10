@@ -12,7 +12,7 @@
 - The model's sandbox `breakdownType` strings ("Product Charges", "Principle", "FBA fees") differ from the camel-case strings vendors (Trellis, Openbridge) report from production (`ProductCharges`, `AmazonFees`, `Commission`), so example payloads are not a label source. (P-sell-28)
 - Amazon publishes no closed list of the names fulfilment and storage charges carry: `breakdownType`, v0 `FeeType`, Product Fees `FeeType` and settlement `amount-description` are open strings, and new names appear. (P-ful-15)
 - AMALYTIX reports that some surcharges (storage utilization, low-inventory, fuel) may have no type of their own and sit inside another line. (P-ful-15)
-- In the v0 event structures examined, `ServiceFeeEvent` and `CapacityReservationBillingEvent` carry no order, so the order-scoped reads examined (`listFinancialEventsByOrderId`, order-level transactions) carry no storage, placement, capacity or overage charge; read in Amazon's model, not yet seen on a live account, and whether any record carries these at SKU or order level is open. (P-ful-17)
+- In the v0 model, `ServiceFeeEvent` carries `AmazonOrderId`, `SellerSKU`, `FnSKU` and `ASIN`, and `CapacityReservationBillingEvent` carries none of them; whether storage, placement, capacity or overage charges come back on `listFinancialEventsByOrderId` or order-level transactions is read in Amazon's model, not yet seen on a live account. (P-ful-17)
 
 ## Data Kiosk economics
 
