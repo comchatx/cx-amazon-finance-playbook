@@ -1,0 +1,82 @@
+[
+  {
+    "query": "德国站佣金和 FBA 费里的 19% 增值税我能抵扣吗？",
+    "should_trigger": true
+  },
+  {
+    "query": "My US settlement shows tax collected and then the same amount taken back — is Amazon keeping my sales tax?",
+    "should_trigger": true
+  },
+  {
+    "query": "What will my 2026 1099-K show and what is the threshold?",
+    "should_trigger": true
+  },
+  {
+    "query": "亚马逊在欧洲什么时候是 deemed supplier，替我交 VAT？",
+    "should_trigger": true
+  },
+  {
+    "query": "Do I owe Washington B&O tax on my FBA sales even though Amazon collects sales tax?",
+    "should_trigger": true
+  },
+  {
+    "query": "Where do I get Amazon's fee invoices with VAT for my German tax adviser?",
+    "should_trigger": true
+  },
+  {
+    "query": "MarketplaceFacilitatorTax-Principal 这一行是什么意思？",
+    "should_trigger": true
+  },
+  {
+    "query": "Can I pull the VAT transaction report through the API?",
+    "should_trigger": true
+  },
+  {
+    "query": "Is the VAT inside my German selling price mine to declare or Amazon's?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which orders had tax collected by Amazon as marketplace facilitator?",
+    "should_trigger": true
+  },
+  {
+    "query": "Why is my next payout so small?",
+    "should_trigger": false
+  },
+  {
+    "query": "How is the monthly storage fee calculated?",
+    "should_trigger": false
+  },
+  {
+    "query": "Reconcile the 11-05 payout line by line",
+    "should_trigger": false
+  },
+  {
+    "query": "退款的时候 FBA 费退不退？",
+    "should_trigger": false
+  },
+  {
+    "query": "Which product made the most money in October?",
+    "should_trigger": false
+  },
+  {
+    "query": "How far back can getReports list settlements?",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我把德国站的 listing 翻译成德语",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn on Pan-European FBA for my blankets",
+    "should_trigger": false
+  }
+]

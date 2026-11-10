@@ -1,0 +1,36 @@
+{
+  "skill_name": "refunds-and-reimbursements",
+  "evals": [
+    {
+      "id": 31,
+      "name": "reimbursements-october",
+      "prompt": "Can you check the FBA reimbursements Amazon gave me in October? I think the damaged sherpa reimbursement is too low — I paid more than that for the new batch.",
+      "expected_output": "GET_FBA_REIMBURSEMENTS_DATA (requested; Pricing or Amazon Fulfillment role, P-ref-19): 2026-10-09 Lost_Warehouse HL-FLEECE-GRY 2 x 6.90 = 13.80 cash; 2026-10-23 Damaged_Warehouse HL-SHERPA-Q 1 x 16.20 cash; 2026-10-23 Damaged_Warehouse HL-WEIGHTED-15 1 unit put back as inventory, no money (P-ref-17); 2026-10-30 Reimbursement_Reversal of 4471900001 via original-reimbursement-id, -6.90 (P-ref-18). Cash 23.10, matching the FBAInventoryReimbursement transactions and the settlement rows (P-ref-20). Since 2025-03-31 a unit lost or damaged in the warehouse is valued at sourcing cost, excluding shipping (P-ref-14): 16.20 is the old batch's unit cost in notes/costs.csv (S-2606), the new batch is 18.40; which batch the damaged unit came from is not in the data. Windows are dated facts on Amazon's pages (P-ref-16); no SP-API files a claim or enters a sourcing cost (P-ref-29). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer reads GET_FBA_REIMBURSEMENTS_DATA (a createReport for it in cx-calls.log) and lists its four October rows: 13.80 for two lost fleece units, 16.20 for one damaged sherpa, a damaged weighted blanket reimbursed as inventory, and a -6.90 reversal.",
+        "The answer separates cash from inventory: the weighted blanket's unit put back in stock moved no money.",
+        "The answer links the -6.90 reversal to reimbursement 4471900001 through original-reimbursement-id, leaving one lost fleece unit paid.",
+        "The answer gives the cash total 23.10 and ties it to the money lines (the FBAInventoryReimbursement transactions or the settlement's reimbursement rows).",
+        "On the sherpa, the answer says 16.20 equals the old batch's unit cost in notes/costs.csv and is below the new batch's 18.40, that reimbursement is valued at sourcing cost (not including freight) since 2025-03-31, and that the data does not show which batch the unit came from; it does not declare the amount wrong.",
+        "The answer says any dispute or sourcing-cost entry is made in Seller Central within the window Amazon's page states, and does not claim the API can file a claim or that one was filed.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    },
+    {
+      "id": 32,
+      "name": "refunds-by-date",
+      "prompt": "10 月份我美国站一共退款了多少？我要做月报。",
+      "expected_output": "Counted by posting date (UTC), October 2026: 9 refunds, 379.91 principal refunded; the net money effect is -334.31 after the referral fee credit (+57.00) and the refund administration fees (-11.40); refunded tax is offset by the facilitator lines. Counted by the original order (created in October, Pacific time): 11 refunds, 539.89 principal, 3 of them posted in November so far, and more can still come; one refund posted in October belongs to a September order. Economics dates a refund by its request time. Which date the books use is the seller's choice (P-ref-25, P-prof-28). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer gives October's refunds by posting date: 9 refunds and 379.91 refunded principal, naming that basis.",
+        "The answer separates refunded principal from the net money effect (about -334.31 with the referral credit of 57.00 and refund administration fees of 11.40), or names those fee lines.",
+        "The answer gives at least one other date basis with its figure, such as refunds of orders placed in October: 11 refunds and 539.89, 3 of them posted in November (within one refund if UTC days are used and said).",
+        "The answer says the date basis is the seller's choice (posting, order, settlement or request date), not presenting one as Amazon's only answer.",
+        "The answer does not count the refunded sales tax, offset by the facilitator lines, as a refund cost.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    }
+  ]
+}

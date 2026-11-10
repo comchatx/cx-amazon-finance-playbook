@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Seller Central 显示我有一千多刀余额，为什么下一笔打款只有五百？",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the Account Level Reserve on my payments page and when will Amazon release it?",
+    "should_trigger": true
+  },
+  {
+    "query": "订单都送达了，钱为什么还是 deferred？什么时候能变成 available？",
+    "should_trigger": true
+  },
+  {
+    "query": "Can I get my German balance paid out today instead of waiting for the next payout?",
+    "should_trigger": true
+  },
+  {
+    "query": "My payout says PAID but my bank hasn't received it — where is the money?",
+    "should_trigger": true
+  },
+  {
+    "query": "下一次打款是哪天、大概多少钱？",
+    "should_trigger": true
+  },
+  {
+    "query": "Amazon 说要 DD+14 才放款，我的钱要压多久？",
+    "should_trigger": true
+  },
+  {
+    "query": "My balance went negative and Amazon charged my credit card — why did that happen?",
+    "should_trigger": true
+  },
+  {
+    "query": "用 ACCS 收款和用 PingPong 这类第三方收款，钱到账的路径和汇率有什么区别？",
+    "should_trigger": true
+  },
+  {
+    "query": "Why is part of my US balance 'reserved' and does it ever come back?",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我对一下 11 月 5 号那笔打款，settlement 里每一行是什么",
+    "should_trigger": false
+  },
+  {
+    "query": "How much did Amazon charge me in referral and FBA fees last month?",
+    "should_trigger": false
+  },
+  {
+    "query": "我的加重毯 10 月扣掉所有成本到底赚了多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Which SP-API role do I need to read the settlement reports?",
+    "should_trigger": false
+  },
+  {
+    "query": "德国站佣金里的 19% 增值税能抵扣吗？",
+    "should_trigger": false
+  },
+  {
+    "query": "Amazon reimbursed a damaged unit at less than my cost — can I dispute it?",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I lower the bid on my weighted blanket's exact-match campaign?",
+    "should_trigger": false
+  },
+  {
+    "query": "Rewrite the title and bullets of my sherpa blanket listing",
+    "should_trigger": false
+  }
+]

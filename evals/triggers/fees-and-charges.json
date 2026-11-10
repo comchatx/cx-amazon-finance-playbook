@@ -1,0 +1,82 @@
+[
+  {
+    "query": "为什么 10 月中开始加重毯的 FBA 配送费从 8.78 涨到了 9.10？",
+    "should_trigger": true
+  },
+  {
+    "query": "Break down every fee Amazon took from my US account in October by type",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the inbound placement service fee and why was I charged 86.40?",
+    "should_trigger": true
+  },
+  {
+    "query": "月度仓储费是怎么算的？10 月扣的那笔是哪个月的？",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer returned an item and Amazon only gave back part of the referral fee — what is the refund administration fee?",
+    "should_trigger": true
+  },
+  {
+    "query": "What size tier is my weighted blanket in and how does that set its fulfillment fee?",
+    "should_trigger": true
+  },
+  {
+    "query": "Low-inventory-level fee 是什么，我怎样才不会被收？",
+    "should_trigger": true
+  },
+  {
+    "query": "Does the Fee Preview report include storage and placement fees?",
+    "should_trigger": true
+  },
+  {
+    "query": "Professional 套餐每月 39.99 的订阅费在哪看得到扣款？",
+    "should_trigger": true
+  },
+  {
+    "query": "How much will the aged inventory surcharge be on stock older than 180 days?",
+    "should_trigger": true
+  },
+  {
+    "query": "我的钱 deferred 了，什么时候能到账？",
+    "should_trigger": false
+  },
+  {
+    "query": "Reconcile my November 5 payout to the bank deposit",
+    "should_trigger": false
+  },
+  {
+    "query": "Which report gives me reimbursements for lost FBA units?",
+    "should_trigger": false
+  },
+  {
+    "query": "What will my 1099-K show for 2026?",
+    "should_trigger": false
+  },
+  {
+    "query": "Profit per product for October after cost of goods, please",
+    "should_trigger": false
+  },
+  {
+    "query": "Which SP-API call gives me past payouts and their trace ids?",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Set my sherpa blanket price to 54.99",
+    "should_trigger": false
+  },
+  {
+    "query": "我的竞品这周降价了没有？",
+    "should_trigger": false
+  }
+]

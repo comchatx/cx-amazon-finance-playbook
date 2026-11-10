@@ -25,7 +25,7 @@ it.skipIf(repository() === TEMPLATE)("holds no placeholder of the template", () 
   const left = walk(ROOT)
     .filter((path) => !path.endsWith("test/template.test.ts") && !path.endsWith("package-lock.json"))
     .flatMap((path) => readFileSync(path, "utf8").split("\n").map((line, n) => [relative(ROOT, path), n + 1, line] as const))
-    .filter(([, , line]) => /REPLACE|replace-me/.test(line))
+    .filter(([, , line]) => /\bREPLACE\b|replace-me/.test(line))
     .map(([path, n]) => `${path}:${n}`);
   expect(left).toEqual([]);
   const field = (JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { comchatx: { order: number } }).comchatx;

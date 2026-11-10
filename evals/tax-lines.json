@@ -1,0 +1,37 @@
+{
+  "skill_name": "tax-lines",
+  "evals": [
+    {
+      "id": 61,
+      "name": "de-vat",
+      "prompt": "我在德国站，Amazon 收的佣金和 FBA 费里面有 19% 的增值税吗？我能抵扣吗？另外帮我拉一下德国站 10 月的 VAT 报告，我要给税务师。",
+      "expected_output": "The DE fee lines carry VAT in a nested breakdown: an HL-FLEECE-GRY-DE order's Commission 5.25 + 1.00 and FBA 4.12 + 0.78; the sherpa 9.75 + 1.85 and 6.30 + 1.20; the subscription 39.00 + 7.41; storage 35.00 + 6.65; the rate, 19%, read from the lines (P-sell-14, P-api-4). By posting date, VAT on fees in October is 101.35. It is there because the seller is established in Germany and Amazon EU's German branch invoices it with German VAT since 2024-08-01 (P-tax-13). Whether it is recoverable or a cost is the seller's booking with its adviser, on Amazon's fee invoices (P-tax-29). Sales VAT: DE order items have no marketplace-facilitator collection and the settlement no facilitator VAT line, so the VAT inside 34.99 and 64.99 is the seller's to declare; Amazon is deemed supplier only for sellers established outside the EU (P-tax-4, P-tax-19, P-prof-22). GET_VAT_TRANSACTION_DATA answers 403: it needs Tax Invoicing (Restricted), which the app lacks (P-tax-10); the fee invoices are in Seller Central's Tax Document Library, and no seller API returns them (P-tax-12, P-rec-47). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer reads VAT on fees from the DE money lines (nested breakdowns or the fee estimate's TaxAmount), such as the fleece's Commission 5.25 + 1.00 and FBA fee 4.12 + 0.78, or the subscription 39.00 + 7.41, and derives the rate from the lines rather than assuming it.",
+        "The answer gives a VAT-on-fees total for October with its date basis (by posting date 101.35, or another basis named).",
+        "The answer connects the VAT on fees to the seller being established in Germany (invoiced by Amazon's German branch since 2024-08-01), not to every EU seller.",
+        "The answer says whether the VAT on fees is recoverable or a cost is the seller's and its tax adviser's booking on Amazon's fee invoices, and does not state the deduction as certain.",
+        "The answer says Amazon collects no VAT on these German sales (no marketplace-facilitator collection on the DE order items, no facilitator VAT line), so the VAT inside the prices is the seller's to declare; it does not treat Amazon as deemed supplier here.",
+        "The answer does not present a VAT transaction report: the request answered 403 (or was not made, with the reason) because it needs Tax Invoicing (Restricted); it points to Seller Central (VAT reports, the Tax Document Library for fee invoices).",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    },
+    {
+      "id": 62,
+      "name": "us-sales-tax-1099k",
+      "prompt": "My US settlement shows tax collected and then the same amount taken away — is Amazon stealing my sales tax? Also what will my 1099-K show for 2026, and do I owe any state taxes Amazon doesn't handle?",
+      "expected_output": "In settlement 24183000109, Tax 173.50 and MarketplaceFacilitatorTax-Principal -173.50 net to zero (orders 198.78, refunds -25.28): tax Amazon collects and remits as marketplace facilitator, neither the seller's revenue nor its cost (P-tax-2). Orders v2026-01-01 shows per item taxCollections model MARKETPLACE_FACILITATOR (P-tax-4). The 1099-K reports unadjusted gross sales, including tax, not reduced by fees or refunds, and is issued to US persons (P-tax-7); its threshold changed by law and is read from the IRS for the year (P-tax-8). The seller is a German GmbH (notes/catalog.md), so whether a 1099-K is issued depends on its US tax status. The sales tax report is generated in the Tax Document Library and needs Tax Remittance (Restricted) (P-tax-9). State taxes on gross receipts (Washington B&O, Ohio CAT, Texas franchise tax) are not collected by Amazon; FBA inventory can create presence; a question for the seller's adviser (P-tax-30, P-tax-31). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer shows from the settlement or the transactions that the collected tax and MarketplaceFacilitatorTax-Principal offset each other (173.50 each way in the 2026-10-20..11-03 settlement, or another period's matching pair), so the tax is neither the seller's revenue nor a charge on it.",
+        "The answer reads the remitting party from an order (taxCollections model MARKETPLACE_FACILITATOR) or names that field as where it is stated per item.",
+        "The answer says the 1099-K reports gross sales including tax and not reduced by fees or refunds, and gives the threshold as the IRS's for the year (read from the IRS, or said to be checked there) rather than reciting one number as fixed.",
+        "The answer notes that the 1099-K goes to US persons and that the seller is a German company per its notes, so whether one is issued depends on its US tax status; it does not assert one will come.",
+        "The answer says the US sales tax report needs Tax Remittance (Restricted) and is generated in the Tax Document Library, and does not present report data it did not get.",
+        "The answer names state taxes Amazon's facilitator collection does not cover (gross-receipts taxes such as Washington B&O) as a question for the seller's adviser, without asserting the seller owes them.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    }
+  ]
+}

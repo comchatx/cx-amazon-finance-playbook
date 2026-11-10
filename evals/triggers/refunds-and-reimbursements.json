@@ -1,0 +1,82 @@
+[
+  {
+    "query": "10 月 Amazon 给了我哪些 FBA 赔偿？有没有被撤回的？",
+    "should_trigger": true
+  },
+  {
+    "query": "Amazon reimbursed a damaged sherpa blanket at 16.20 but my new batch cost 18.40 — is that right?",
+    "should_trigger": true
+  },
+  {
+    "query": "退款的时候 FBA 配送费会退回给我吗？",
+    "should_trigger": true
+  },
+  {
+    "query": "How many refunds did I have in October and how much money did they cost me?",
+    "should_trigger": true
+  },
+  {
+    "query": "There is a Reimbursement_Reversal in my report — what does it reverse?",
+    "should_trigger": true
+  },
+  {
+    "query": "仓库弄丢的货多久之内可以申请赔偿？",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer got a refund but never sent the item back — will Amazon reimburse me?",
+    "should_trigger": true
+  },
+  {
+    "query": "A-to-z 索赔和 chargeback 会从哪里扣钱？",
+    "should_trigger": true
+  },
+  {
+    "query": "Was the damaged weighted blanket reimbursed in cash or put back as inventory?",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I set my sourcing cost so lost units are reimbursed at the right value?",
+    "should_trigger": true
+  },
+  {
+    "query": "我的可用余额为什么这么少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Why did my weighted blanket's FBA fee go up in October?",
+    "should_trigger": false
+  },
+  {
+    "query": "Tie the German settlement total to my bank account",
+    "should_trigger": false
+  },
+  {
+    "query": "Is there VAT inside Amazon's fees in Germany?",
+    "should_trigger": false
+  },
+  {
+    "query": "Which API role does Data Kiosk Economics need?",
+    "should_trigger": false
+  },
+  {
+    "query": "Give me gross margin per SKU for October",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a removal order for my unsellable fleece throws",
+    "should_trigger": false
+  },
+  {
+    "query": "我的 listing 被下架了怎么办？",
+    "should_trigger": false
+  }
+]
