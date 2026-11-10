@@ -1,4 +1,4 @@
-# Research for the money playbook (working name `@comchatx/cx-money-playbook`)
+# Research for the Amazon finance playbook
 
 This directory is the research base for a pi skill pack over `cx-amazon-sp-api`, ComChatX's open door to Amazon's Selling Partner API (`cx raw amazon-sp-api`). The pack covers where a seller's Amazon money is and what each product earned. Brief 2026-11-03-306 asked for the research first; its correction 1 governs every value that changes by marketplace or by year.
 
@@ -55,7 +55,7 @@ Each file has the same layout:
 12. positions;
 13. verification.
 
-## What the pack would hold (proposed; Jack's word pending)
+## What the pack holds (proposed at stop point 1; Jack passed it on 2026-11-10)
 
 - **Skills:** `money-flow`, `fees-and-charges`, `refunds-and-reimbursements`, `product-earnings`, `settlement-reconcile`, `tax-lines`, `money-reads`.
 - **Templates:** `/money-where`, `/fees-review`, `/product-earnings`, `/settlement-check`, `/refunds-review`.

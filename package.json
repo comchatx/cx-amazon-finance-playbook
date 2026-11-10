@@ -1,15 +1,15 @@
 {
-  "name": "@comchatx/cx-replace-me",
+  "name": "@comchatx/cx-amazon-finance-playbook",
   "version": "0.1.0",
-  "description": "REPLACE: the card's line in English, written by the copy page the guide names.",
+  "description": "Shows where your Amazon money is and what each product earned.",
   "license": "MIT",
   "author": "ComChatX",
-  "homepage": "https://github.com/comchatx/cx-replace-me#readme",
+  "homepage": "https://github.com/comchatx/cx-amazon-finance-playbook#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/comchatx/cx-replace-me.git"
+    "url": "git+https://github.com/comchatx/cx-amazon-finance-playbook.git"
   },
-  "bugs": "https://github.com/comchatx/cx-replace-me/issues",
+  "bugs": "https://github.com/comchatx/cx-amazon-finance-playbook/issues",
   "keywords": [
     "pi-package"
   ],
@@ -17,10 +17,15 @@
   "pi": {
     "skills": [
       "./skills"
+    ],
+    "prompts": [
+      "./prompts"
     ]
   },
   "files": [
     "skills",
+    "prompts",
+    "research",
     "README.zh-CN.md"
   ],
   "scripts": {
@@ -28,26 +33,87 @@
     "test": "vitest run"
   },
   "comchatx": {
-    "name": "REPLACE: the name the Plugins page prints",
-    "about": "REPLACE: the card's line in Chinese",
+    "name": "Amazon Finance Playbook",
+    "about": "看清你在亚马逊的钱在哪，以及每个产品赚了多少。",
     "mark": {
-      "line": "REPLACE"
+      "line": "table"
     },
-    "section": "REPLACE",
-    "order": 0,
+    "section": "extensions",
+    "order": 53,
     "skills": {
-      "cx-replace-me": {
+      "money-flow": {
         "about": {
-          "en": "REPLACE: what the skill tells cx, in English",
-          "zh": "REPLACE: what the skill tells cx, in Chinese"
+          "en": "Where your Amazon money is now: deferred, held in reserve, available or paid out, and when each sale's money reaches your bank.",
+          "zh": "你在亚马逊的钱现在在哪：递延、预留、可用还是已付出，每笔销售的钱什么时候到你的银行。"
+        }
+      },
+      "fees-and-charges": {
+        "about": {
+          "en": "Every fee and charge Amazon takes: what it is, how it is worked out, when it posts and on which line.",
+          "zh": "亚马逊收的每一种费用：是什么、怎么算、什么时候扣、记在哪一行。"
+        }
+      },
+      "refunds-and-reimbursements": {
+        "about": {
+          "en": "Refunds, claims, reimbursements and adjustments, what each does to your money, and the order or shipment each ties back to.",
+          "zh": "退款、索赔、赔偿和调整对你的钱有什么影响，各自对应哪个订单或货件。"
+        }
+      },
+      "product-earnings": {
+        "about": {
+          "en": "What each product earned after all of Amazon's fees and your own costs, and what each way of counting changes.",
+          "zh": "每个产品扣掉亚马逊所有费用和你自己的成本后赚了多少，以及不同算法会改变什么。"
+        }
+      },
+      "settlement-reconcile": {
+        "about": {
+          "en": "Matching a settlement or a month to what reached your bank and to your books, and where each difference comes from.",
+          "zh": "把一期结算或一个月和银行到账、账本对上，说清每一笔差额从哪来。"
+        }
+      },
+      "tax-lines": {
+        "about": {
+          "en": "Which tax a money line carries, who owes it or has paid it, and where each tax document is.",
+          "zh": "一行钱里带的是哪种税，谁欠、谁已代缴，每份税务文件在哪。"
+        }
+      },
+      "money-reads": {
+        "about": {
+          "en": "Which SP-API read or report holds each money fact, with the role it needs, how far back it goes and how late it arrives.",
+          "zh": "每项财务数据在 SP-API 的哪个接口或报告里，需要什么角色，能往回查多久，延迟多少。"
         }
       }
     },
+    "prompts": {
+      "money-where": {
+        "zh": "我在亚马逊的钱现在在哪：可用多少、递延多少、预留多少，下一笔回款什么时候到账。"
+      },
+      "fees-review": {
+        "zh": "上个月亚马逊扣了哪些费用，各是怎么算的，和之前比有什么变化。"
+      },
+      "product-earnings": {
+        "zh": "上个月每个产品在亚马逊赚了多少：扣掉亚马逊所有费用和我自己的成本。"
+      },
+      "settlement-check": {
+        "zh": "把最近一期结算和到账金额对上，说清楚每一笔差在哪。"
+      },
+      "refunds-review": {
+        "zh": "上个月的退款、赔偿和调整各是多少，对应哪些订单或货件。"
+      }
+    },
     "builds": [
-      "REPLACE"
+      {
+        "on": "cx-amazon-sp-api",
+        "need": "required"
+      },
+      {
+        "on": "@comchatx/cx-amazon-ads",
+        "need": "optional"
+      }
     ]
   },
   "devDependencies": {
+    "@earendil-works/pi-ai": "1.5.0",
     "@earendil-works/pi-coding-agent": "1.5.0",
     "@types/node": "26.2.0",
     "typescript": "7.0.2",
