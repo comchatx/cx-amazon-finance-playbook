@@ -2,7 +2,7 @@
 
 ## Platform reporting
 
-- Under China's State Council Decree 810 (in force from June 2025) and STA Announcement 2025 No. 15, every platform reports to China's tax authority, in the month after each quarter, the identity and prior-quarter income of its in-platform operators. (P-tax-33)
+- Under China's State Council Decree 810 (in force from June 2025) and STA Announcement 2025 No. 15, every platform reports to China's tax authority the identity and prior-quarter income of its in-platform operators; when each report is due is Decree 810 Article 4's. (P-tax-33)
 - Overseas platforms report through a licensed domestic entity, a domestic service entity, or a designated domestic agent. (P-tax-33)
 - The first report covered Q3 2025; data from before the Decree took effect is not reported. (P-tax-33)
 - Overseas platforms need not report the identity of their overseas-resident sellers. (P-tax-33)

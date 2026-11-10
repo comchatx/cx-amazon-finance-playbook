@@ -12,7 +12,7 @@
 ## Transactions (Finances 2024-06-19)
 
 - `listTransactions` returns `DEFERRED`, `RELEASED` and `DEFERRED_RELEASED` transactions unless `transactionStatus` filters them. (P-rec-9)
-- Amazon's documented way to list the transactions behind a payment: take the payment's `FinancialEventGroupId` from `listFinancialEventGroups`, then call `listTransactions` with `relatedIdentifierName=FINANCIAL_EVENT_GROUP_ID` and `transactionStatus=RELEASED`. (P-rec-11)
+- In Amazon's documents, a payment's `FinancialEventGroupId` (from `listFinancialEventGroups`) is the `FINANCIAL_EVENT_GROUP_ID` related identifier of the released transactions behind that payment in `listTransactions`. (P-rec-11)
 - Whether those released transactions sum to the settlement V2 `total-amount`, or only with `DEFERRED_RELEASED` added, is read in Amazon's documents, not yet seen on a live account. (P-rec-11)
 - The model and the live reference state that `FINANCIAL_EVENT_GROUP_ID` and `ORDER_ID` are "the only `relatedIdentifier` with filtering capabilities at the moment". (P-rec-12)
 - The 2026-07-29 release note announces a `SETTLEMENT_ID` filter on `listTransactions`; it was in the model for one day (2026-10-28) and removed by the 2026-10-29 "Finance API Rollback"; whether a live call accepts it is read in Amazon's documents, not yet seen on a live account. (P-rec-12)
