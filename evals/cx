@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # The skill-creator runs' stand-in for the box's cx, for cx-amazon-finance-playbook. It never touches the network.
-#   cx raw amazon-sp-api --origin O --method M --path P [--query k=v]... [--header K=V]... [--body B|@file] [--output F] [--json]
+#   cx raw amazon-sp-api --origin O --method M --path P [--query k=v]... [--header K=V]... [--body <file>] [--output F] [--json]
 # Answers reads from $TENANT_TREE/../stub-replies/ (beside the tree, out of the run's sight). Origin na is the US store's
 # connection, eu the German store's; fe has no connection (key_required). Every change is refused (out_of_scope, exit 2): any PUT,
 # PATCH or DELETE, and any POST but createReport, createQuery and the Product Fees estimates; initiatePayout among them. A
@@ -76,10 +76,10 @@ mkdir -p "$STATE"
 bodyfile="$STATE/body-$$.json"
 : >"$bodyfile"
 if [ $has_body -eq 1 ]; then
-  case "$body" in
-    @*) f="${body#@}"; [ -f "$f" ] || { rm -f "$bodyfile"; refuse out_of_scope "no such body file: $f"; }; cat "$f" >"$bodyfile" ;;
-    *) printf '%s' "$body" >"$bodyfile" ;;
-  esac
+  f="${body#@}"
+  case "$f" in /tenant/*) f="$T${f#/tenant}" ;; esac
+  [ -f "$f" ] || { rm -f "$bodyfile"; refuse out_of_scope "no such body file: $f"; }
+  cat "$f" >"$bodyfile"
 fi
 
 name="$(printf '%s' "$path" | tr '/' '-' | sed 's/^-//' | cut -c1-80)"

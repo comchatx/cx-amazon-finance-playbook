@@ -40,7 +40,7 @@
       "files": [],
       "expectations": [
         "The answer reads the refund lines of 113-9142934-8376445: principal -79.99, referral fee credit +12.00, refund administration fee -2.40, total -70.39, posted 2026-10-26.",
-        "The answer explains the 2.40 as the refund administration fee kept from the referral fee, and gives its rate and cap as the US store's current terms (read from Amazon's fee page or named as such), not a figure valid for every store and year.",
+        "The answer explains the 2.40 as the refund administration fee kept from the referral fee credit, and names where its rate and cap are read for the US store (Amazon's fee schedule page, or the figures named as the US store's current terms), not a figure stated as valid for every store and year.",
         "The answer says the 8.78 FBA fee charged on the shipment of 2026-10-11 has no credit among the refund lines, and presents 'the FBA fee is not refunded' as what the lines show or what practitioners report, not as a rule Amazon states.",
         "The answer puts the seller's cost for this order in Amazon's charges at 11.18 (2.40 + 8.78), or the same components named.",
         "The answer treats the 5.80 tax and its facilitator offset as netting to zero, not as money the seller lost.",
