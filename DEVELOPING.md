@@ -27,6 +27,22 @@ Seven positions are the writing seats' own reasoning and no skill cites them: P-
 
 A value that differs by marketplace or year (a fee rate, a reserve or payout schedule, a tax rate, a threshold or a filing date) is in no line of a skill: the line says where it is read, and the research keeps the value as it was read, with its marketplace and date.
 
+## What the README no longer says
+
+The README's words were signed on 2026-11-11. These parts of the earlier README left it then and are kept here whole, in both languages: a question that the `/product-earnings` template already asks, a sentence that named the ads and stock playbooks by names the Plugins page does not print (the ads playbook is not yet published), and a sentence on prices that the Plugins page's source cards already give.
+
+> - What did B0EXAMPLE1 earn last month after fees and my unit cost?
+>
+> What your ads earn against their cost is the Sponsored Ads Playbook's, and your stock and restocking are the Stock Playbook's.
+>
+> Each is its own plugin, and its page gives its price.
+
+> - B0EXAMPLE1 上个月扣掉费用和进货成本后赚了多少？
+>
+> 广告赚的钱够不够付广告费，归赞助广告手册；库存和补货，归库存手册。
+>
+> 两者各是一个插件，价格见各自的页面。
+
 ## Install
 
 ```bash
