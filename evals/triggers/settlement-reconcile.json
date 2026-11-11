@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Amazon 11 月 5 号打给我 1331.53 美元，帮我对一下这笔钱是怎么来的",
+    "should_trigger": true
+  },
+  {
+    "query": "My script reads the German settlement total as 6926 euros but my bank got 69.26 — which is right?",
+    "should_trigger": true
+  },
+  {
+    "query": "做 10 月的账：Amazon 10 月打给我的钱和 10 月的销售额差在哪？",
+    "should_trigger": true
+  },
+  {
+    "query": "Why don't the transactions of a financial event group add up to the payout?",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I book an Amazon settlement that spans two months in Xero?",
+    "should_trigger": true
+  },
+  {
+    "query": "Settlement 报告里的 Previous Reserve Amount Balance 和 Current Reserve Amount 是什么？",
+    "should_trigger": true
+  },
+  {
+    "query": "Match each Amazon payout in my bank export to its settlement report",
+    "should_trigger": true
+  },
+  {
+    "query": "A2X 和 Link My Books 是怎么处理跨月的 settlement 的？",
+    "should_trigger": true
+  },
+  {
+    "query": "The settlement has rows with no SKU and no order id — what are they?",
+    "should_trigger": true
+  },
+  {
+    "query": "My accountant's October revenue doesn't match Amazon's payouts; walk me through the difference",
+    "should_trigger": true
+  },
+  {
+    "query": "我的钱什么时候能从 deferred 变 available？",
+    "should_trigger": false
+  },
+  {
+    "query": "Why was I charged a refund administration fee?",
+    "should_trigger": false
+  },
+  {
+    "query": "Which SP-API role reads GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2?",
+    "should_trigger": false
+  },
+  {
+    "query": "能不能把德国站余额现在就打出来？",
+    "should_trigger": false
+  },
+  {
+    "query": "What will my 1099-K include?",
+    "should_trigger": false
+  },
+  {
+    "query": "Profit per product for October, please",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Pause the campaigns that have ACOS above 60%",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I create an FBA inbound shipment?",
+    "should_trigger": false
+  }
+]

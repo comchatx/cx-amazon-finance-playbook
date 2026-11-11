@@ -1,0 +1,651 @@
+#!/usr/bin/env bash
+# The skill-creator runs' stand-in for the box's cx, for cx-amazon-finance-playbook. It never touches the network.
+#   cx raw amazon-sp-api --origin O --method M --path P [--query k=v]... [--header K=V]... [--body <file>] [--output F] [--json]
+# Answers reads from $TENANT_TREE/../stub-replies/ (beside the tree, out of the run's sight). Origin na is the US store's
+# connection, eu the German store's; fe has no connection (key_required). Every change is refused (out_of_scope, exit 2): any PUT,
+# PATCH or DELETE, and any POST but createReport, createQuery and the Product Fees estimates; initiatePayout among them. A
+# requested report or query is finished at once; a document's url is a file:// path under stub-replies/report-files/.
+# Each call is appended to $TENANT_TREE/../cx-calls.log. Works on bash 3.2 (macOS) and bash 5; JSON goes through python3 -I.
+set -u
+T="${TENANT_TREE:?TENANT_TREE is the seller tree}"
+ROOT="$(cd "$T/.." && pwd)"
+S="$ROOT/stub-replies"
+STATE="$ROOT/stub-state"
+echo "cx $*" >>"$ROOT/cx-calls.log"
+
+refuse() {
+  python3 -I -c 'import json,sys; print(json.dumps({"request_id": "stub", "paths": [], "cost": [], "refusal": {"reason": sys.argv[1], "detail": sys.argv[2]}}))' "$1" "$2"
+  exit 2
+}
+lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
+
+[ "${1-}" = raw ] || { echo "stub cx: this run has only 'cx raw amazon-sp-api ...'" >&2; exit 2; }
+[ $# -ge 2 ] || { echo "stub cx: cx raw <source> --method M --path P ..." >&2; exit 2; }
+src="$2"; shift 2
+[ "$src" = amazon-sp-api ] || refuse out_of_scope "stub: this run has only amazon-sp-api"
+method=GET path='' origin='' output='' json=0 body='' has_body=0 query=''
+NL='
+'
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --origin) origin="${2-}"; shift 2 ;;
+    --method) method="$(printf '%s' "${2-}" | tr '[:lower:]' '[:upper:]')"; shift 2 ;;
+    --path) path="${2-}"; shift 2 ;;
+    --query) query="$query$NL${2-}"; shift 2 ;;
+    --body) body="${2-}"; has_body=1; shift 2 ;;
+    --output) output="${2-}"; shift 2 ;;
+    --json) json=1; shift ;;
+    --header)
+      h="${2-}"; shift 2
+      case "$h" in *=*) k="${h%%=*}" ;; *:*) k="${h%%:*}" ;; *) k="$h" ;; esac
+      case "$(lower "$k")" in
+        x-amz-access-token|authorization) refuse out_of_scope "the door attaches its own token; a request naming $k is refused" ;;
+      esac ;;
+    *) echo "stub cx: unknown flag $1" >&2; exit 2 ;;
+  esac
+done
+[ -n "$path" ] || { echo "stub cx: --path is required" >&2; exit 2; }
+case "$path" in /*) ;; *) path="/$path" ;; esac
+case "$path" in *\?*) query="$query$NL$(printf '%s' "${path#*\?}" | tr '&' '\n')"; path="${path%%\?*}" ;; esac
+case "$(lower "$path")" in
+  /tokens|/tokens/*) refuse out_of_scope "the Tokens API is the door's own: a request that needs a restricted-data token names the x-cx-restricted-data header, and the door asks Amazon for the token" ;;
+esac
+
+case "$origin" in
+  https://sellingpartnerapi-na.amazon.com) store=ATVPDKIKX0DER ;;
+  https://sellingpartnerapi-eu.amazon.com) store=A1PA6795UKMFR9 ;;
+  https://sellingpartnerapi-fe.amazon.com) refuse key_required "no Amazon SP-API connection is saved for region fe" ;;
+  https://sandbox.sellingpartnerapi-*) refuse out_of_scope "stub: this run answers the production origins only" ;;
+  '') refuse out_of_scope "amazon-sp-api needs --origin, one of the sellingpartnerapi hosts" ;;
+  *) refuse out_of_scope "stub: $origin is not a Selling Partner API origin" ;;
+esac
+
+case "$method" in
+  GET|HEAD) [ $has_body -eq 0 ] || refuse out_of_scope "a $method with a body is not sent" ;;
+  POST)
+    case "$path" in
+      /reports/2021-06-30/reports|/dataKiosk/2023-11-15/queries|/products/fees/v0/feesEstimate|\
+      /products/fees/v0/items/*/feesEstimate|/products/fees/v0/listings/*/feesEstimate) ;;
+      *) refuse out_of_scope "stub: this run sends no change to Amazon; POST $path is not a read this stand-in answers" ;;
+    esac ;;
+  PUT|PATCH|DELETE) refuse out_of_scope "stub: this run sends no change to Amazon ($method $path)" ;;
+  *) refuse out_of_scope "$method is not sent" ;;
+esac
+
+mkdir -p "$STATE"
+bodyfile="$STATE/body-$$.json"
+: >"$bodyfile"
+if [ $has_body -eq 1 ]; then
+  f="${body#@}"
+  case "$f" in /tenant/*) f="$T${f#/tenant}" ;; esac
+  [ -f "$f" ] || { rm -f "$bodyfile"; refuse out_of_scope "no such body file: $f"; }
+  cat "$f" >"$bodyfile"
+fi
+
+name="$(printf '%s' "$path" | tr '/' '-' | sed 's/^-//' | cut -c1-80)"
+if [ -z "$output" ]; then
+  mkdir -p "$T/raw/$src"
+  output="$T/raw/$src/stub-$(date +%Y%m%dT%H%M%S)-$$-${RANDOM}-${name}.json"
+fi
+[ ! -e "$output" ] || { rm -f "$bodyfile"; refuse out_of_scope "the file is already there"; }
+[ -d "$(dirname "$output")" ] || { rm -f "$bodyfile"; refuse out_of_scope "no such directory"; }
+
+PY='
+import datetime as dt, json, os, re, sys
+from urllib.parse import unquote
+
+store, method, path, query, bodyfile, out, S, STATE = sys.argv[1:9]
+UTC = dt.timezone.utc
+NOW = dt.datetime(2026, 11, 10, 9, 0, tzinfo=UTC)
+DATA = json.load(open(os.path.join(S, "data.json")))
+SD = DATA["stores"][store]
+CUR = SD["currency"]
+raw = open(bodyfile).read()
+Q = {}
+for line in query.split("\n"):
+    if line.strip():
+        k, _, v = line.partition("=")
+        Q.setdefault(k.strip(), []).append(unquote(v.strip()))
+
+
+def q(k, default=None):
+    v = Q.get(k)
+    return v[-1] if v else default
+
+
+def qlist(k):
+    return [x for v in Q.get(k, []) for x in v.split(",") if x]
+
+
+def reply(status, doc):
+    with open(out, "w") as f:
+        json.dump(doc, f, indent=2)
+    print(status)
+    sys.exit(0)
+
+
+def fail(status, code, msg):
+    reply(status, {"errors": [{"code": code, "message": "stub: " + msg}]})
+
+
+def ts(s, name):
+    try:
+        s = s.strip()
+        if len(s) == 10:
+            s += "T00:00:00Z"
+        t = dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+        return t if t.tzinfo else t.replace(tzinfo=UTC)
+    except (ValueError, AttributeError):
+        fail(400, "InvalidInput", "%s is not an ISO 8601 date-time: %r" % (name, s))
+
+
+def iso(t):
+    return t.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def money(x):
+    return {"currencyCode": CUR, "currencyAmount": round(x + 0.0, 2)}
+
+
+def body():
+    if not raw.strip():
+        return {}
+    try:
+        return json.loads(raw)
+    except ValueError:
+        fail(400, "InvalidInput", "the body is not JSON")
+
+
+def check_market(names):
+    for n in names:
+        for m in qlist(n):
+            if m != store:
+                fail(400, "InvalidInput", "marketplace %s is not on this connection; this origin serves %s" % (m, store))
+
+
+def state(kind, key, doc=None):
+    p = os.path.join(STATE, "%s-%s.json" % (kind, key))
+    if doc is not None:
+        json.dump(doc, open(p, "w"), indent=2)
+    return json.load(open(p)) if os.path.exists(p) else None
+
+
+TX = SD["transactions"]
+PER = SD["periods"]
+for p in PER:
+    p["_s"], p["_e"] = ts(p["start"], "start"), ts(p["end"], "end")
+for x in TX:
+    x["_p"], x["_r"] = ts(x["_posted"], "posted"), ts(x["_release"], "release")
+
+
+def public(x):
+    return {k: v for k, v in x.items() if not k.startswith("_")}
+
+
+def period_at(t):
+    for p in PER:
+        if p["_s"] <= t < p["_e"]:
+            return p
+    return PER[0] if t < PER[0]["_s"] else PER[-1]
+
+
+def balances(t):
+    p = period_at(t)
+    deferred = sum(x["totalAmount"]["currencyAmount"] for x in TX if x["_kind"] == "order" and x["_p"] <= t < x["_r"])
+    rel = sum(x["totalAmount"]["currencyAmount"] for x in TX if p["_s"] <= x["_r"] <= t)
+    avail = p["prevReserve"] + rel - p["curReserve"]
+    return {"AVAILABLE": avail, "DEFERRED": deferred, "ACCOUNT_LEVEL_RESERVE": p["curReserve"], "RESERVED": deferred + p["curReserve"],
+            "TOTAL": avail + deferred + p["curReserve"], "_open": p["prevReserve"] + rel, "_period": p}
+
+
+def status_at(x):
+    if x["_kind"] != "order":
+        return "RELEASED"
+    return "DEFERRED_RELEASED" if x["_r"] <= NOW else "DEFERRED"
+
+
+META = {"partnerId": DATA["seller"], "accountType": "Standard Orders", "marketplaceId": store}
+
+# ---------------------------------------------------------------- Finances 2024-06-19
+if path == "/finances/2024-06-19/transactions":
+    check_market(["marketplaceId"])
+    rin, riv = q("relatedIdentifierName"), q("relatedIdentifierValue")
+    if rin and rin not in ("FINANCIAL_EVENT_GROUP_ID", "ORDER_ID"):
+        fail(400, "InvalidInput", "relatedIdentifierName %s is not supported; FINANCIAL_EVENT_GROUP_ID and ORDER_ID are the only values" % rin)
+    if rin and not riv:
+        fail(400, "InvalidInput", "relatedIdentifierValue is required with relatedIdentifierName")
+    if not rin and not q("postedAfter"):
+        fail(400, "InvalidInput", "postedAfter is required if you do not specify a related identifier")
+    edge = NOW - dt.timedelta(minutes=2)
+    after = ts(q("postedAfter"), "postedAfter") if q("postedAfter") else None
+    before = ts(q("postedBefore"), "postedBefore") if q("postedBefore") else edge
+    if after and after > edge:
+        fail(400, "InvalidInput", "postedAfter must be more than two minutes before the time of the request")
+    if before > edge:
+        fail(400, "InvalidInput", "postedBefore must be more than two minutes before the time of the request")
+    if after and before <= after:
+        fail(400, "InvalidInput", "postedBefore must be later than postedAfter")
+    st = q("transactionStatus")
+    if st and st not in ("DEFERRED", "RELEASED", "DEFERRED_RELEASED"):
+        fail(400, "InvalidInput", "transactionStatus %s is not one of DEFERRED, RELEASED, DEFERRED_RELEASED" % st)
+    hits = []
+    if not (after and (before - after) > dt.timedelta(days=180)):
+        for x in TX:
+            o = public(x)
+            o["transactionStatus"] = status_at(x)
+            if o["transactionStatus"] == "DEFERRED":
+                o["relatedIdentifiers"] = [r for r in o["relatedIdentifiers"] if r["relatedIdentifierName"] not in ("FINANCIAL_EVENT_GROUP_ID", "SETTLEMENT_ID")]
+            if rin and not any(r["relatedIdentifierName"] == rin and r["relatedIdentifierValue"] == riv for r in o["relatedIdentifiers"]):
+                continue
+            if after and not after <= x["_p"] < before:
+                continue
+            if not after and x["_p"] >= before:
+                continue
+            if st == "DEFERRED" and o["transactionStatus"] != "DEFERRED":
+                continue
+            if st == "DEFERRED_RELEASED" and o["transactionStatus"] != "DEFERRED_RELEASED":
+                continue
+            if st == "RELEASED" and o["transactionStatus"] == "DEFERRED":
+                continue
+            hits.append(o)
+    start = int((q("nextToken") or "stub-0").split("-")[-1] or 0)
+    page = hits[start:start + 100]
+    pl = {"transactions": page}
+    if start + 100 < len(hits):
+        pl["nextToken"] = "stub-%d" % (start + 100)
+    reply(200, {"payload": pl})
+
+if path == "/finances/2024-06-19/balances":
+    check_market(["marketplaceIds"])
+    at = NOW
+    if q("asOfDate"):
+        at = ts(q("asOfDate"), "asOfDate")
+        if len(q("asOfDate")) == 10:
+            at = at + dt.timedelta(days=1) - dt.timedelta(seconds=1)
+        if at > NOW:
+            fail(400, "InvalidInput", "asOfDate is in the future")
+    b = balances(at)
+
+    def one(kind, kids=()):
+        o = {"partnerMetadata": META, "balanceType": kind, "amount": money(b[kind]), "balances": list(kids)}
+        o["asOfDate" if q("asOfDate") else "lastUpdatedTime"] = iso(at if q("asOfDate") else NOW - dt.timedelta(minutes=41))
+        return o
+
+    tree = one("TOTAL", [one("AVAILABLE"), one("RESERVED", [one("DEFERRED"), one("ACCOUNT_LEVEL_RESERVE")])])
+    want = q("balanceType")
+    if want:
+        if want not in b:
+            fail(400, "InvalidInput", "balanceType %s is not one of AVAILABLE, RESERVED, TOTAL, DEFERRED, ACCOUNT_LEVEL_RESERVE" % want)
+        reply(200, {"balances": [one(want)]})
+    reply(200, {"balances": [tree]})
+
+if path == "/finances/2024-06-19/summary":
+    check_market(["marketplaceIds"])
+    rin, riv = q("relatedIdentifierName"), q("relatedIdentifierValue")
+    if rin and rin != "SETTLEMENT_ID":
+        fail(400, "InvalidInput", "relatedIdentifierName %s is not supported; the only value is SETTLEMENT_ID" % rin)
+
+    def summ(p, rows, net):
+        acc = {}
+        for x in rows:
+            k = x["transactionType"]
+            acc[k] = acc.get(k, 0) + x["totalAmount"]["currencyAmount"]
+        brk = [{"breakdownType": k, "breakdownAmount": money(v), "breakdowns": []} for k, v in sorted(acc.items())]
+        return {"partnerMetadata": META, "netProceeds": money(net), "breakdowns": brk, "periodStart": iso(p[0]), "periodEnd": iso(p[1]),
+                "relatedIdentifiers": p[2]}
+
+    if rin:
+        hit = [p for p in PER if p["settlementId"] == riv and p["closed"]]
+        if not hit:
+            reply(200, {"summaries": []})
+        p = hit[0]
+        rows = [x for x in TX if p["_s"] <= x["_r"] < p["_e"]]
+        s = summ((p["_s"], p["_e"], [{"relatedIdentifierName": "SETTLEMENT_ID", "relatedIdentifierValue": p["settlementId"]}]), rows, p["total"])
+        s["breakdowns"] += [{"breakdownType": "PreviousReserveAmountBalance", "breakdownAmount": money(p["prevReserve"]), "breakdowns": []},
+                            {"breakdownType": "CurrentReserveAmount", "breakdownAmount": money(-p["curReserve"]), "breakdowns": []}]
+        reply(200, {"summaries": [s]})
+    if not q("periodStart"):
+        fail(400, "InvalidInput", "periodStart, or relatedIdentifierName SETTLEMENT_ID with its value, is required")
+    a = ts(q("periodStart"), "periodStart")
+    e = ts(q("periodEnd"), "periodEnd") if q("periodEnd") else NOW
+    rows = [x for x in TX if a <= x["_p"] < e]
+    reply(200, {"summaries": [summ((a, e, []), rows, sum(x["totalAmount"]["currencyAmount"] for x in rows))]})
+
+# ---------------------------------------------------------------- Finances v0
+if path == "/finances/v0/financialEventGroups":
+    after = ts(q("FinancialEventGroupStartedAfter"), "FinancialEventGroupStartedAfter") if q("FinancialEventGroupStartedAfter") else NOW - dt.timedelta(days=90)
+    before = ts(q("FinancialEventGroupStartedBefore"), "FinancialEventGroupStartedBefore") if q("FinancialEventGroupStartedBefore") else NOW - dt.timedelta(minutes=2)
+    if before - after > dt.timedelta(days=180):
+        fail(400, "InvalidInput", "the range between FinancialEventGroupStartedAfter and FinancialEventGroupStartedBefore cannot be more than 180 days")
+    if after > NOW - dt.timedelta(minutes=2):
+        fail(400, "InvalidInput", "FinancialEventGroupStartedAfter must be more than two minutes before the time of the request")
+    b = balances(NOW)
+    gl = []
+    for p in PER:
+        if not after <= p["_s"] < before:
+            continue
+        g = {"FinancialEventGroupId": p["groupId"], "ProcessingStatus": "Closed" if p["closed"] else "Open",
+             "FundTransferStatus": ("Succeeded" if p["_e"] + dt.timedelta(days=2) <= NOW else "Processing") if p["closed"] else "Unknown",
+             "OriginalTotal": {"CurrencyCode": CUR, "CurrencyAmount": p["total"] if p["closed"] else round(b["_open"], 2)},
+             "BeginningBalance": {"CurrencyCode": CUR, "CurrencyAmount": p["prevReserve"]}, "FinancialEventGroupStart": p["start"]}
+        if p["closed"]:
+            g.update({"ConvertedTotal": {"CurrencyCode": CUR, "CurrencyAmount": p["total"]}, "FinancialEventGroupEnd": p["end"],
+                      "FundTransferDate": iso(p["_e"] + dt.timedelta(days=2, hours=5)), "TraceId": p["traceId"], "AccountTail": SD["accountTail"]})
+        gl.append(g)
+    gl.reverse()
+    reply(200, {"payload": {"FinancialEventGroupList": gl}})
+
+if path.startswith("/finances/v0/"):
+    fail(404, "NotFound", "this fixture answers money lines through /finances/2024-06-19/transactions; v0 events are not in it")
+
+# ---------------------------------------------------------------- Transfers 2024-06-01
+if path == "/finances/transfers/2024-06-01/payouts":
+    check_market(["marketplaceIds"])
+    a = ts(q("createdAfter"), "createdAfter") if q("createdAfter") else NOW - dt.timedelta(days=90)
+    e = ts(q("createdBefore"), "createdBefore") if q("createdBefore") else NOW
+    pays = []
+    for p in reversed(PER):
+        if not p["closed"] or not a <= p["_e"] < e:
+            continue
+        if q("payoutId") and q("payoutId") != p["settlementId"]:
+            continue
+        paid = p["_e"] + dt.timedelta(days=2, hours=5)
+        hist = [{"status": "STARTED", "lastUpdatedDate": iso(p["_e"] + dt.timedelta(hours=2))},
+                {"status": "IN_TRANSIT", "lastUpdatedDate": iso(p["_e"] + dt.timedelta(hours=9))}]
+        if paid <= NOW:
+            hist.append({"status": "PAID", "lastUpdatedDate": iso(paid)})
+        pays.append({"id": p["settlementId"], "partnerMetadata": META, "currentStatus": hist[-1]["status"], "statusHistory": hist,
+                     "type": "SCHEDULED", "amount": money(p["total"]), "accountTail": SD["accountTail"], "paymentMethod": "BANK_ACCOUNT",
+                     "creationDate": iso(p["_e"]), "paymentRail": SD["paymentRail"], "traceId": p["traceId"],
+                     "period": {"startDate": p["start"], "endDate": p["end"]},
+                     "relatedIdentifiers": [{"relatedIdentifierName": "SETTLEMENT_ID", "relatedIdentifierValue": p["settlementId"]}]})
+    reply(200, {"payouts": pays})
+
+if path == "/finances/transfers/2024-06-01/payouts/expected":
+    check_market(["marketplaceIds"])
+    b = balances(NOW)
+    p = b["_period"]
+    reply(200, {"expectedPayouts": [{"partnerMetadata": META, "amount": money(b["AVAILABLE"]), "status": "SCHEDULED",
+                                     "period": {"startDate": p["start"], "endDate": p["end"]}, "scheduledDate": iso(p["_e"] + dt.timedelta(days=2)),
+                                     "accountTail": SD["accountTail"], "paymentMethod": "BANK_ACCOUNT", "relatedIdentifiers": []}]})
+
+if path == "/finances/transfers/2024-06-01/paymentMethods":
+    if not q("marketplaceId"):
+        fail(400, "InvalidInput", "marketplaceId is required")
+    check_market(["marketplaceId"])
+    reply(200, {"paymentMethods": [{"accountHolderName": "Hearthly Home GmbH", "paymentMethodId": "PM-FIXT-" + SD["accountTail"],
+                                    "tail": SD["accountTail"], "countryCode": "US" if store == "ATVPDKIKX0DER" else "DE",
+                                    "paymentMethodType": "BANK_ACCOUNT", "assignmentType": "DEFAULT_DEPOSIT_METHOD"}]})
+
+if path.startswith("/finances/invoices/"):
+    fail(403, "Unauthorized", "access to the requested resource is denied; this API is available to vendors")
+
+# ---------------------------------------------------------------- Reports 2021-06-30
+REPS = [r for r in DATA["reports"] if r["marketplaceIds"] == [store]]
+
+
+def own_requests():
+    out_ = []
+    if os.path.isdir(STATE):
+        for f in sorted(os.listdir(STATE)):
+            if f.startswith("report-"):
+                r = json.load(open(os.path.join(STATE, f)))
+                if r["marketplaceIds"] == [store]:
+                    out_.append(r)
+    return out_
+
+
+def find_report(rid):
+    for r in REPS + own_requests():
+        if r["reportId"] == rid:
+            return r
+    return None
+
+
+if path == "/reports/2021-06-30/reports" and method == "POST":
+    b = body()
+    rt = b.get("reportType")
+    mk = b.get("marketplaceIds") or []
+    if not rt or not mk:
+        fail(400, "InvalidInput", "reportType and marketplaceIds are required")
+    if mk != [store]:
+        fail(400, "InvalidInput", "marketplaceIds must name the marketplace of this connection, %s" % store)
+    if rt in DATA["restricted"]:
+        fail(403, "Unauthorized", "access to the requested resource is denied: the application does not hold a role this report type needs")
+    if rt.startswith("GET_V2_SETTLEMENT_REPORT_DATA") or rt.startswith("GET_SETTLEMENT_REPORT_DATA") or rt == "GET_ALT_FLAT_FILE_PAYMENT_SETTLEMENT_DATA":
+        fail(400, "InvalidInput", "settlement reports are scheduled by Amazon and cannot be requested")
+    if rt == "GET_DATE_RANGE_FINANCIAL_HOLDS_DATA":
+        fail(400, "InvalidInput", "this report type cannot be requested through the API")
+    spec = DATA["requestable"].get("%s|%s" % (store, rt))
+    n = len(own_requests()) + 1
+    if spec:
+        r = {k: v for k, v in spec.items()}
+        r["reportId"] = "%s%02d" % (spec["reportId"], n)
+    else:
+        r = {"reportId": "8199%07d%02d" % (sum(map(ord, rt)), n), "reportType": rt, "marketplaceIds": [store],
+             "processingStatus": "CANCELLED"}
+    for k in ("dataStartTime", "dataEndTime"):
+        if b.get(k):
+            r[k] = b[k]
+    r.update({"createdTime": iso(NOW), "processingStartTime": iso(NOW), "processingEndTime": iso(NOW + dt.timedelta(minutes=1))})
+    state("report", r["reportId"], r)
+    reply(202, {"reportId": r["reportId"]})
+
+if path == "/reports/2021-06-30/reports":
+    if not q("reportTypes") and not q("nextToken"):
+        fail(400, "InvalidInput", "reportTypes or nextToken is required")
+    check_market(["marketplaceIds"])
+    since = ts(q("createdSince"), "createdSince") if q("createdSince") else NOW - dt.timedelta(days=90)
+    if since < NOW - dt.timedelta(days=90):
+        fail(400, "InvalidInput", "createdSince cannot be more than 90 days in the past")
+    until = ts(q("createdUntil"), "createdUntil") if q("createdUntil") else NOW
+    types = set(qlist("reportTypes"))
+    sts = set(qlist("processingStatuses"))
+    size = max(1, min(100, int(q("pageSize") or 10)))
+    hits = [r for r in REPS + own_requests() if r["reportType"] in types and since <= ts(r["createdTime"], "createdTime") <= until
+            and (not sts or r["processingStatus"] in sts)]
+    hits.sort(key=lambda r: r["createdTime"], reverse=True)
+    start = int((q("nextToken") or "stub-0").split("-")[-1] or 0)
+    doc = {"reports": [public(r) for r in hits[start:start + size]]}
+    if start + size < len(hits):
+        doc["nextToken"] = "stub-%d" % (start + size)
+    reply(200, doc)
+
+m = re.fullmatch(r"/reports/2021-06-30/reports/([0-9]+)", path)
+if m:
+    r = find_report(m.group(1))
+    if not r:
+        fail(404, "NotFound", "no report %s" % m.group(1))
+    reply(200, public(r))
+
+m = re.fullmatch(r"/reports/2021-06-30/documents/(.+)", path)
+if m:
+    for r in REPS + own_requests():
+        if r.get("reportDocumentId") == m.group(1):
+            d = {"reportDocumentId": m.group(1), "url": "file://" + os.path.join(S, "report-files", r["_file"])}
+            if r.get("_gzip"):
+                d["compressionAlgorithm"] = "GZIP"
+            reply(200, d)
+    fail(404, "NotFound", "no document %s" % m.group(1))
+
+# ---------------------------------------------------------------- Product Fees v0
+VAT = 0.19 if store == "A1PA6795UKMFR9" else 0.0
+
+
+def estimate(req, idtype, idv):
+    r = req.get("FeesEstimateRequest", req)
+    if r.get("MarketplaceId") and r["MarketplaceId"] != store:
+        return None, "MarketplaceId %s is not on this connection" % r["MarketplaceId"]
+    lp = ((r.get("PriceToEstimateFees") or {}).get("ListingPrice") or {})
+    try:
+        price = float(lp.get("Amount"))
+    except (TypeError, ValueError):
+        return None, "PriceToEstimateFees.ListingPrice.Amount is required"
+    prod = None
+    for sku, v in SD["products"].items():
+        if (idtype == "ASIN" and v["asin"] == idv) or (idtype == "SellerSKU" and sku == idv):
+            prod = v
+    if not prod:
+        return None, "%s %s is not a product of this seller in %s" % (idtype, idv, store)
+    afn = r.get("IsAmazonFulfilled", True)
+    ref, fba = round(price * 0.15 + 1e-9, 2), (prod["fba"] if afn else 0.0)
+    rv, fv = round(ref * VAT + 1e-9, 2), round(fba * VAT + 1e-9, 2)
+    M = lambda x: {"CurrencyCode": CUR, "Amount": round(x, 2)}
+    det = [{"FeeType": "ReferralFee", "FeeAmount": M(ref), "FeePromotion": M(0), "TaxAmount": M(rv), "FinalFee": M(ref + rv)},
+           {"FeeType": "VariableClosingFee", "FeeAmount": M(0), "TaxAmount": M(0), "FinalFee": M(0)},
+           {"FeeType": "PerItemFee", "FeeAmount": M(0), "TaxAmount": M(0), "FinalFee": M(0)}]
+    if afn:
+        det.append({"FeeType": "FBAFees", "FeeAmount": M(fba), "TaxAmount": M(fv), "FinalFee": M(fba + fv),
+                    "IncludedFeeDetailList": [{"FeeType": "FBAPerUnitFulfillmentFee", "FeeAmount": M(fba), "TaxAmount": M(fv), "FinalFee": M(fba + fv)}]})
+    return {"Status": "Success", "FeesEstimateIdentifier": {"MarketplaceId": store, "IdType": idtype, "SellerId": DATA["seller"], "IdValue": idv,
+                                                            "IsAmazonFulfilled": afn, "PriceToEstimateFees": r.get("PriceToEstimateFees"),
+                                                            "SellerInputIdentifier": r.get("Identifier", "")},
+            "FeesEstimate": {"TimeOfFeesEstimation": iso(NOW), "TotalFeesEstimate": M(ref + fba + rv + fv), "FeeDetailList": det},
+            "Error": None}, None
+
+
+m = re.fullmatch(r"/products/fees/v0/(items|listings)/([^/]+)/feesEstimate", path)
+if m:
+    res, err = estimate(body(), "ASIN" if m.group(1) == "items" else "SellerSKU", unquote(m.group(2)))
+    if err:
+        fail(400, "InvalidInput", err)
+    reply(200, {"payload": {"FeesEstimateResult": res}})
+
+if path == "/products/fees/v0/feesEstimate":
+    b = body()
+    if not isinstance(b, list) or not b:
+        fail(400, "InvalidInput", "the body is a list of fee estimate requests")
+    outl = []
+    for one in b[:20]:
+        res, err = estimate(one, one.get("IdType", ""), one.get("IdValue", ""))
+        outl.append(res or {"Status": "ClientError", "FeesEstimateIdentifier": {"IdType": one.get("IdType"), "IdValue": one.get("IdValue")},
+                            "Error": {"Type": "Sender", "Code": "InvalidParameterValue", "Message": "stub: " + err}})
+    reply(200, outl)
+
+# ---------------------------------------------------------------- Data Kiosk 2023-11-15
+if path == "/dataKiosk/2023-11-15/queries" and method == "POST":
+    gql = body().get("query") or ""
+    if not gql.strip():
+        fail(400, "InvalidInput", "query is required")
+    n = len([f for f in os.listdir(STATE) if f.startswith("query-")]) + 1
+    qid = "%d" % (93000000000 + n)
+    econ = "analytics_economics" in gql
+    doc = {"queryId": qid, "query": gql, "createdTime": iso(NOW), "processingStatus": "FATAL" if econ else "DONE",
+           "processingStartTime": iso(NOW), "processingEndTime": iso(NOW + dt.timedelta(minutes=2))}
+    if econ:
+        doc["errorDocumentId"] = "DK-ERR-%s" % qid
+    state("query", qid, doc)
+    reply(202, {"queryId": qid})
+
+if path == "/dataKiosk/2023-11-15/queries":
+    qs = [json.load(open(os.path.join(STATE, f))) for f in sorted(os.listdir(STATE)) if f.startswith("query-")]
+    reply(200, {"queries": qs})
+
+m = re.fullmatch(r"/dataKiosk/2023-11-15/queries/([0-9]+)", path)
+if m:
+    d = state("query", m.group(1))
+    if not d:
+        fail(404, "NotFound", "no query %s" % m.group(1))
+    reply(200, d)
+
+m = re.fullmatch(r"/dataKiosk/2023-11-15/documents/(.+)", path)
+if m:
+    if m.group(1).startswith("DK-ERR-"):
+        reply(200, {"documentId": m.group(1), "documentUrl": "file://" + os.path.join(S, "report-files", "datakiosk-error.json")})
+    fail(404, "NotFound", "no document %s" % m.group(1))
+
+# ---------------------------------------------------------------- Orders 2026-01-01, Sales, Sellers
+ORD = SD["orders"]
+
+
+def order_doc(o, inc):
+    M = lambda x: {"amount": "%.2f" % x, "currencyCode": CUR}
+    item = {"orderItemId": o["itemCode"], "quantityOrdered": 1,
+            "product": {"asin": o["asin"], "title": o["title"], "sellerSku": o["sku"], "condition": {"conditionType": "New"},
+                        "price": {"unitPrice": M(o["price"])}}}
+    if "TAX" in inc:
+        if store == "ATVPDKIKX0DER":
+            item["tax"] = {"taxCollections": [{"model": "MARKETPLACE_FACILITATOR", "responsibleParty": "AMAZON_SERVICES_INC"}],
+                           "taxCalculationBreakdowns": []}
+        else:
+            item["tax"] = {"taxCollections": [], "taxCalculationBreakdowns": []}
+    if "PROCEEDS" in inc:
+        bd = [{"type": "ITEM", "subtotal": M(o["price"])}]
+        if o["tax"]:
+            bd.append({"type": "TAX", "subtotal": M(o["tax"])})
+        item["proceeds"] = {"proceedsTotal": M(o["price"] + o["tax"]), "breakdowns": bd}
+    doc = {"orderId": o["orderId"], "createdTime": o["created"], "lastUpdatedTime": o["posted"],
+           "salesChannel": {"channelName": "AMAZON", "marketplaceId": store, "marketplaceName": SD["name"]}, "orderItems": [item]}
+    if "FULFILLMENT" in inc:
+        doc["fulfillment"] = {"fulfillmentStatus": "SHIPPED", "fulfilledBy": "AMAZON"}
+    return doc
+
+
+m = re.fullmatch(r"/orders/2026-01-01/orders/([0-9-]+)", path)
+if m:
+    o = ORD.get(m.group(1))
+    if not o:
+        fail(404, "NotFound", "no order %s in this marketplace" % m.group(1))
+    reply(200, {"order": order_doc(o, set(qlist("includedData")))})
+
+if path == "/orders/2026-01-01/orders":
+    check_market(["marketplaceIds"])
+    if not q("createdAfter") and not q("lastUpdatedAfter") and not q("paginationToken"):
+        fail(400, "InvalidInput", "createdAfter or lastUpdatedAfter is required")
+    a = ts(q("createdAfter") or q("lastUpdatedAfter") or "2000-01-01", "createdAfter")
+    e = ts(q("createdBefore"), "createdBefore") if q("createdBefore") else NOW - dt.timedelta(minutes=2)
+    hits = sorted((o for o in ORD.values() if a <= ts(o["created"], "c") < e), key=lambda o: o["created"])
+    size = max(1, min(100, int(q("maxResultsPerPage") or 100)))
+    start = int((q("paginationToken") or "stub-0").split("-")[-1] or 0)
+    doc = {"orders": [order_doc(o, set(qlist("includedData"))) for o in hits[start:start + size]], "createdBefore": iso(e)}
+    if start + size < len(hits):
+        doc["pagination"] = {"nextToken": "stub-%d" % (start + size)}
+    reply(200, doc)
+
+if path == "/sales/v1/orderMetrics":
+    check_market(["marketplaceIds"])
+    iv, gran = q("interval"), q("granularity")
+    if not iv or "--" not in iv or not gran:
+        fail(400, "InvalidInput", "marketplaceIds, interval (start--end) and granularity are required")
+    a_s, e_s = iv.split("--", 1)
+    a, e = ts(a_s, "interval start"), ts(e_s, "interval end")
+    off = a.utcoffset() or dt.timedelta(0)
+    rows = [o for o in ORD.values() if a <= ts(o["created"], "c") < e and (not q("asin") or o["asin"] == q("asin")) and (not q("sku") or o["sku"] == q("sku"))]
+
+    def bucket(lo, hi):
+        sel = [o for o in rows if lo <= ts(o["created"], "c") < hi]
+        tot = round(sum(o["price"] for o in sel), 2)
+        return {"interval": "%s--%s" % (lo.isoformat(), hi.isoformat()), "unitCount": len(sel), "orderItemCount": len(sel), "orderCount": len(sel),
+                "averageUnitPrice": {"amount": round(tot / len(sel), 2) if sel else 0, "currencyCode": CUR}, "totalSales": {"amount": tot, "currencyCode": CUR}}
+
+    if gran == "Total":
+        reply(200, {"payload": [bucket(a, e)]})
+    step = {"Day": 1, "Week": 7}.get(gran)
+    if not step:
+        fail(400, "InvalidInput", "this stand-in answers granularity Total, Day or Week")
+    outl, lo = [], a
+    while lo < e:
+        hi = min(lo + dt.timedelta(days=step), e)
+        outl.append(bucket(lo, hi))
+        lo = hi
+    reply(200, {"payload": outl})
+
+if path == "/sellers/v1/marketplaceParticipations":
+    mk = {"id": store, "countryCode": "US" if store == "ATVPDKIKX0DER" else "DE", "name": SD["name"],
+          "defaultCurrencyCode": CUR, "defaultLanguageCode": "en_US" if store == "ATVPDKIKX0DER" else "de_DE", "domainName": SD["name"].lower().replace("amazon", "www.amazon")}
+    reply(200, {"payload": [{"marketplace": mk, "participation": {"isParticipating": True, "hasSuspendedListings": False}, "storeName": "Hearthly"}]})
+
+fail(404, "NotFound", "no fixture for %s %s" % (method, path))
+'
+status="$(python3 -I -c "$PY" "$store" "$method" "$path" "$query" "$bodyfile" "$output" "$S" "$STATE")"
+rc=$?
+rm -f "$bodyfile"
+[ $rc -eq 0 ] && [ -n "$status" ] || { echo "stub cx: internal error" >&2; exit 1; }
+case "$status" in 2??) kind=fresh code=0 ;; *) kind=failed code=1 ;; esac
+if [ $json -eq 1 ]; then
+  printf '{"request_id":"stub","paths":[{"path":"%s","http_status":%s,"outcome":{"kind":"%s"},"file":"%s"}],"cost":[]}\n' "$path" "$status" "$kind" "$output"
+else
+  [ $code -eq 0 ] || echo "the source answered HTTP $status" >&2
+  echo "$output"
+fi
+exit $code

@@ -1,23 +1,14 @@
-REPLACE: what cx gets done with the plugin, then the data and how far it reaches. WRITING-A-PACKAGE.md, "Shipping it", gives this README's order, and the copy page it names gives its words.
+cx matches each Amazon settlement to its payout and explains each difference, then works out each product's profit after Amazon's fees and your costs, as entered at Amazon or told to cx, in every marketplace you connected.
 
 Some things you can ask:
 
-- REPLACE
-- REPLACE
-- REPLACE
+- Why was my last payout so much lower than my sales?
+- Why did Amazon charge my card last month?
+- Which lines on my German settlement carry VAT, and who pays it?
 
-## Connecting your store
+To see what holding stock costs and when to restock, also install cx-amazon-stock-playbook.
 
-REPLACE
+## What it uses
 
-## When jobs run
-
-REPLACE
-
-## What it costs
-
-REPLACE
-
-## What it needs
-
-REPLACE
+- **Amazon SP-API:** your Amazon selling account, connected on the Amazon SP-API plugin. cx reads your transactions, settlements, payouts and fees there.
+- **Amazon Ads,** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.

@@ -1,0 +1,82 @@
+[
+  {
+    "query": "我的 Sherpa 毯子 10 月到底赚了多少钱？成本中途涨了",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me profit per product for October after Amazon's fees and my cost of goods",
+    "should_trigger": true
+  },
+  {
+    "query": "仓储费和月租该怎么分摊到每个产品上？",
+    "should_trigger": true
+  },
+  {
+    "query": "Which of my three blankets actually makes the most money after all Amazon charges?",
+    "should_trigger": true
+  },
+  {
+    "query": "FIFO and average cost give me different profits — which one should I use?",
+    "should_trigger": true
+  },
+  {
+    "query": "What were my net proceeds per ASIN last month according to Amazon?",
+    "should_trigger": true
+  },
+  {
+    "query": "运费和关税要不要算进每个 SKU 的成本？",
+    "should_trigger": true
+  },
+  {
+    "query": "How much is my FBA inventory worth at cost at the end of October?",
+    "should_trigger": true
+  },
+  {
+    "query": "加重毯每卖一件扣完所有费用净赚多少？",
+    "should_trigger": true
+  },
+  {
+    "query": "Should refunds count against the month of the order or the month of the refund in my product P&L?",
+    "should_trigger": true
+  },
+  {
+    "query": "德国站打款显示 PAID 但银行没到账",
+    "should_trigger": false
+  },
+  {
+    "query": "List every fee Amazon charged me in October",
+    "should_trigger": false
+  },
+  {
+    "query": "Why does my settlement total not match the bank deposit?",
+    "should_trigger": false
+  },
+  {
+    "query": "Does Amazon collect sales tax for me in Washington?",
+    "should_trigger": false
+  },
+  {
+    "query": "Pull the reimbursements report for October",
+    "should_trigger": false
+  },
+  {
+    "query": "Which SP-API operation lists my settlements and how far back does it go?",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "Increase the daily budget on my best-selling campaign",
+    "should_trigger": false
+  },
+  {
+    "query": "Write A+ content for my weighted blanket",
+    "should_trigger": false
+  }
+]

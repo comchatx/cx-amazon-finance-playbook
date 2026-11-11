@@ -1,0 +1,51 @@
+{
+  "skill_name": "fees-and-charges",
+  "evals": [
+    {
+      "id": 21,
+      "name": "october-fees-us",
+      "prompt": "帮我把美国站 10 月份 Amazon 扣我的所有费用列一下，按类型分，每一项多少钱。",
+      "expected_output": "By posted date (UTC) in October 2026 on ATVPDKIKX0DER: per-order fees on 114 shipments, referral (Commission) 841.50 and FBA fulfilment (FBAPerUnitFulfillmentFee) 854.77; on 9 refunds, the referral credited back +57.00 and the refund administration fee (RefundCommission) 11.40 kept (P-sell-7, P-sell-8); per-order net 1,650.67. Account-level charges with no order or SKU (P-rec-29, P-ful-17): storage 412.37 posted 2026-10-08 whose TimeRangeContext covers September (P-ful-3, P-ful-16), the subscription 39.99 on 2026-10-14 (P-sell-11), the inbound placement fee 86.40 on 2026-10-27 for FBA19FIXT0001 (P-ful-6); 538.76 together; all fees and charges 2,189.43. Storage posted in October covers September, so whether it is October's is a booking choice (P-prof-32, P-ful-21); counting by settlement or order date gives other totals. Labels are Amazon's open strings (P-sell-26, P-api-4). The facilitator tax withheld is not a fee (P-tax-2); ads are paid by card and are not in these lines (P-sell-23). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer gives October's per-order fees from the money lines: referral 841.50 and FBA fulfilment 854.77 on 114 shipments, and on 9 refunds a referral credit of 57.00 and a refund administration fee of 11.40 (net about 1,650.67), each within a cent or two; a different date basis is acceptable if the answer names it.",
+        "The answer lists the account-level charges apart from the per-order fees, saying they carry no order or product: storage 412.37, subscription 39.99 and inbound placement 86.40 (538.76).",
+        "The answer says the 412.37 storage fee posted on 2026-10-08 is for September (TimeRangeContext, or the month-before rule), and that booking it to September or October is a choice, not presenting one as the only answer.",
+        "The answer states the date basis of its totals (posted date, settlement, or order date) and says another basis gives different figures.",
+        "The answer does not count MarketplaceFacilitatorTax-Principal as an Amazon fee, and does not put ad spend among the deducted fees (the notes say ads are paid by card, so they are not in these lines).",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    },
+    {
+      "id": 22,
+      "name": "weighted-fba-fee-rose",
+      "prompt": "Why did the FBA fee on my weighted blanket (B0FIXTURE5) jump from 8.78 to 9.10 in mid-October? Did Amazon remeasure it? Can I get the difference back?",
+      "expected_output": "The charged FBAPerUnitFulfillmentFee for HL-WEIGHTED-15 is 8.78 on units shipped to 2026-10-13 and 9.10 from the shipment of 2026-10-15: the fee is charged at the rate in force on the ship date, and the holiday peak fee period began 2026-10-15 (to 2027-01-14), a dated value read from Amazon's page at run time (P-ful-1, P-ful-22). The Fee Preview (GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA) shows Large Standard, 15.70 lb and 9.10 expected; nothing in the data shows a remeasure. Today's fee estimate is 9.10 against the 2026-09-30 estimate in the tree at 8.78; estimates are not guaranteed (P-api-19). 18 units shipped at 9.10 to 2026-11-07, 5.76 more than at 8.78. A peak rate correctly applied is not reimbursed; a dimension dispute is a separate request with its own window, 90 days in Amazon's text as read (P-ful-2), and no SP-API files it (P-ref-29). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer reads the charged fee from the money lines: 8.78 on units shipped through 2026-10-13 and 9.10 from the shipment of 2026-10-15.",
+        "The answer attributes the change to the holiday peak fulfilment fee applied by ship date, and gives the peak dates as Amazon's for this season (read from Amazon's page, or said to be checked there), not as a permanent rule recited from memory.",
+        "The answer does not claim Amazon remeasured the product: the Fee Preview or today's estimate shows the same size tier (Large Standard) and weight, with 9.10 expected.",
+        "The answer uses a fee estimate read today (9.10, a fee-estimate POST or the Fee Preview in cx-calls.log) rather than only the 2026-09-30 estimate of 8.78 in the tree, and says estimates are not guaranteed.",
+        "The answer puts the extra cost at about 5.76 (18 units at 0.32) through 2026-11-07, or an equivalent figure with its basis stated.",
+        "The answer says a correctly applied peak rate is not reimbursable, and that a dimension dispute would be a separate request in Seller Central within the window Amazon states; it does not claim the API can file it.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    },
+    {
+      "id": 23,
+      "name": "refund-fee-kept",
+      "prompt": "一个加重毯的退款（订单 113-9142934-8376445），客户退了 79.99，可 Amazon 只退了我 12 块佣金里的一部分，FBA 费也没退。这是正常的吗？这一单我一共被扣了多少？",
+      "expected_output": "The refund posted 2026-10-26 for 113-9142934-8376445: Principal -79.99, Tax -5.80 offset by MarketplaceFacilitatorTax-Principal +5.80, Commission +12.00, RefundCommission -2.40, total -70.39. The 2.40 is the refund administration fee kept from the 12.00 referral fee: the lesser of a fixed amount and 20% of the referral fee in the US, both read at run time (P-sell-7, P-sell-8, P-ref-2). The order shipped 2026-10-11 paid Commission 12.00 and FBA 8.78 (pre-peak); the FBA fee has no credit line, which practitioners report and no Amazon page states (P-ref-3). Sale plus refund leaves the seller -11.18 in Amazon's charges (2.40 + 8.78); the sales tax nets to zero (P-tax-2). Whether the unit came back sellable is a separate read. Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer reads the refund lines of 113-9142934-8376445: principal -79.99, referral fee credit +12.00, refund administration fee -2.40, total -70.39, posted 2026-10-26.",
+        "The answer explains the 2.40 as the refund administration fee kept from the referral fee credit, and names where its rate and cap are read for the US store (Amazon's fee schedule page, or the figures named as the US store's current terms), not a figure stated as valid for every store and year.",
+        "The answer says the 8.78 FBA fee charged on the shipment of 2026-10-11 has no credit among the refund lines, and presents 'the FBA fee is not refunded' as what the lines show or what practitioners report, not as a rule Amazon states.",
+        "The answer puts the seller's cost for this order in Amazon's charges at 11.18 (2.40 + 8.78), or the same components named.",
+        "The answer treats the 5.80 tax and its facilitator offset as netting to zero, not as money the seller lost.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    }
+  ]
+}

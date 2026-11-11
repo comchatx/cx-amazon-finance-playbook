@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Which SP-API call gives me every transaction in a settlement?",
+    "should_trigger": true
+  },
+  {
+    "query": "我想拿 7 月到 10 月的 settlement report，API 能拿到多久以前的？",
+    "should_trigger": true
+  },
+  {
+    "query": "Why does listTransactions come back empty for a 200-day window?",
+    "should_trigger": true
+  },
+  {
+    "query": "Deferred Transaction Report 能不能直接用 API 请求？",
+    "should_trigger": true
+  },
+  {
+    "query": "Which role do I need for Data Kiosk Economics — Brand Analytics or Selling Partner Insights?",
+    "should_trigger": true
+  },
+  {
+    "query": "Can I filter listTransactions by SETTLEMENT_ID?",
+    "should_trigger": true
+  },
+  {
+    "query": "listBalances 和 listFinancialEventGroups 有什么区别？各给什么数？",
+    "should_trigger": true
+  },
+  {
+    "query": "My createReport for GET_VAT_TRANSACTION_DATA returned 403 — why?",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the difference between the Fee Preview report and getMyFeesEstimateForSKU?",
+    "should_trigger": true
+  },
+  {
+    "query": "v0 的 listFinancialEvents 什么时候下线？要换成哪个接口？",
+    "should_trigger": true
+  },
+  {
+    "query": "Why is part of my balance on hold?",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the inbound placement fee?",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain why my November payout doesn't match my October sales",
+    "should_trigger": false
+  },
+  {
+    "query": "德国站的增值税我要不要自己申报？",
+    "should_trigger": false
+  },
+  {
+    "query": "How much did the sherpa blanket earn in October?",
+    "should_trigger": false
+  },
+  {
+    "query": "Amazon reversed a reimbursement — what happened?",
+    "should_trigger": false
+  },
+  {
+    "query": "我那条加重毯的广告 ACOS 最多能跑到多少才不亏钱？帮我算一下 break-even ACOS",
+    "should_trigger": false
+  },
+  {
+    "query": "Sherpa 毯子还剩多少天的库存？什么时候该补货、补多少？",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I connect my Amazon Ads account?",
+    "should_trigger": false
+  },
+  {
+    "query": "Update the inventory quantity of my merchant-fulfilled SKU",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "skill_name": "money-reads",
+  "evals": [
+    {
+      "id": 71,
+      "name": "settlements-for-accountant-us",
+      "prompt": "我的税务师要 7 月到 10 月美国站所有的 settlement report，帮我全部下载下来。",
+      "expected_output": "getReports (GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2, ATVPDKIKX0DER) lists six settlements created since 2026-08-12: 2026-08-11..08-25 through 2026-10-20..11-03; the 10-06..10-20 document is already under reports/. The three earlier ones, 2026-06-30..07-14 (1,142.96), 07-14..07-28 (1,360.42) and 07-28..08-11 (783.83), are not listed: getReports reaches 90 days and settlement reports cannot be requested (P-api-15, P-api-30, P-rec-6, P-flow-23). They are requested again in Seller Central; that the API finds them afterwards is practitioners' account, and Amazon states no archive age (P-api-31, P-rec-59). Only the V2 flat file remains after 2026-11-11 (P-rec-2). Settlement periods do not follow months (06-30 start, 11-03 end). The 2024-06-19 transactions can rebuild lines in windows of at most 180 days but are not the settlement documents (P-api-2, P-api-33). Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer lists the US settlements with getReports for GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2 and fetches the six it finds (2026-08-11..08-25 through 2026-10-20..11-03), or notes the one already in reports/.",
+        "The answer says the three July-period settlements (2026-06-30..07-14, 07-14..07-28, 07-28..08-11) are not listed because getReports reaches back only 90 days and settlement reports cannot be requested through the API.",
+        "The answer points the seller to Seller Central for the older statements and, if it says the API can see them once requested there, presents that as practitioners' account rather than Amazon's statement.",
+        "The answer does not use the V1 settlement report types, or if it mentions them, says they are removed on 2026-11-11.",
+        "The answer says settlement periods do not line up with calendar months, so 'July to October' needs a choice of which settlements to include.",
+        "The answer does not present lines rebuilt from transactions as Amazon's settlement reports.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    },
+    {
+      "id": 72,
+      "name": "deferred-report-and-settlement-filter",
+      "prompt": "Pull the Deferred Transaction Report for the US store, and also give me every transaction in settlement 24183000109 — just filter listTransactions by the settlement ID.",
+      "expected_output": "getReports finds no GET_DATE_RANGE_FINANCIAL_HOLDS_DATA, and a createReport is refused: the report must first be requested in Seller Central's Payments Reports Repository, then getReports finds it (P-api-17); it is point-in-time (P-api-35). The deferred money now: listTransactions DEFERRED gives 17 transactions, 513.55, maturing 2026-11-11 to 2026-11-18; listBalances DEFERRED 513.55 (P-flow-19, P-api-7). SETTLEMENT_ID is not a filter in the model: FINANCIAL_EVENT_GROUP_ID and ORDER_ID are; the stand-in answers 400 (P-api-3). The group id of the 2026-10-20..11-03 period comes from listFinancialEventGroups; listTransactions by it gives 60 transactions summing to 1,381.53, the settlement total 1,331.53 plus the 50.00 reserve change, whose agreement is open (P-api-6, P-rec-11, P-api-26). The settlement V2 document is the other source of its lines. Nothing is changed at Amazon.",
+      "files": [],
+      "expectations": [
+        "The answer does not present a Deferred Transaction Report: getReports finds none (a refused createReport is acceptable), and it says the report must first be requested in Seller Central, then found with getReports.",
+        "The answer gives the deferred money now from listTransactions DEFERRED (17 transactions, 513.55) or listBalances DEFERRED (513.55), with the maturity dates when listed.",
+        "The answer says SETTLEMENT_ID is not a filter of listTransactions in Amazon's model (a 400 from the stand-in, or not tried with that reason), and uses the financial event group id from listFinancialEventGroups instead.",
+        "The answer reports the group's 60 transactions and their sum, 1,381.53, against the settlement total 1,331.53, explaining the 50.00 reserve change and not stating equality as Amazon's rule.",
+        "The answer names the settlement V2 document as the other source of the settlement's lines, or reads it.",
+        "The run changed nothing at Amazon: cx-calls.log holds no PUT, PATCH or DELETE and no POST other than reads (createReport, createQuery, fee estimates); no initiatePayout reached the stand-in unrefused; and the answer claims no change was made."
+      ]
+    }
+  ]
+}

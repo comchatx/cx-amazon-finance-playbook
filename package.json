@@ -1,15 +1,15 @@
 {
-  "name": "@comchatx/cx-replace-me",
+  "name": "@comchatx/cx-amazon-finance-playbook",
   "version": "0.1.0",
-  "description": "REPLACE: the card's line in English, written by the copy page the guide names.",
+  "description": "Ties out your Amazon payouts, and each product's profit.",
   "license": "MIT",
   "author": "ComChatX",
-  "homepage": "https://github.com/comchatx/cx-replace-me#readme",
+  "homepage": "https://github.com/comchatx/cx-amazon-finance-playbook#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/comchatx/cx-replace-me.git"
+    "url": "git+https://github.com/comchatx/cx-amazon-finance-playbook.git"
   },
-  "bugs": "https://github.com/comchatx/cx-replace-me/issues",
+  "bugs": "https://github.com/comchatx/cx-amazon-finance-playbook/issues",
   "keywords": [
     "pi-package"
   ],
@@ -17,10 +17,15 @@
   "pi": {
     "skills": [
       "./skills"
+    ],
+    "prompts": [
+      "./prompts"
     ]
   },
   "files": [
     "skills",
+    "prompts",
+    "research",
     "README.zh-CN.md"
   ],
   "scripts": {
@@ -28,26 +33,73 @@
     "test": "vitest run"
   },
   "comchatx": {
-    "name": "REPLACE: the name the Plugins page prints",
-    "about": "REPLACE: the card's line in Chinese",
+    "name": "Amazon Finance Playbook",
+    "about": "对上亚马逊每期结算和回款，算出每个商品的利润。",
     "mark": {
-      "line": "REPLACE"
+      "line": "table"
     },
-    "section": "REPLACE",
-    "order": 0,
+    "section": "extensions",
+    "order": 56,
     "skills": {
-      "cx-replace-me": {
-        "about": {
-          "en": "REPLACE: what the skill tells cx, in English",
-          "zh": "REPLACE: what the skill tells cx, in Chinese"
-        }
+      "money-flow": {
+        "zh": "查清钱在哪：递延、预留、可用，何时回款。",
+        "en": "Where your money is, and when the next payout goes."
+      },
+      "fees-and-charges": {
+        "zh": "说清亚马逊每种费用怎么算、何时扣。",
+        "en": "Each Amazon fee: how it is worked out, when it posts."
+      },
+      "refunds-and-reimbursements": {
+        "zh": "分析退款、索赔和赔偿对回款的影响。",
+        "en": "What refunds, claims and reimbursements do to your money."
+      },
+      "product-earnings": {
+        "zh": "算出每个商品扣掉费用和成本后的利润。",
+        "en": "What each product earns after fees and costs."
+      },
+      "settlement-reconcile": {
+        "zh": "把结算和回款、账本对上，说清差额。",
+        "en": "Settlements matched to payouts and your books."
+      },
+      "tax-lines": {
+        "zh": "分清每笔钱里的税，以及由谁缴。",
+        "en": "The tax in each money line, and who pays it."
+      },
+      "money-reads": {
+        "zh": "说明每项财务数据从哪读、多久更新。",
+        "en": "Where each money figure is read, and how late it lands."
+      }
+    },
+    "prompts": {
+      "money-where": {
+        "zh": "看看亚马逊的钱在哪，下一笔回款哪天发出。"
+      },
+      "fees-review": {
+        "zh": "查看上个月亚马逊扣的费用、算法和变化。"
+      },
+      "product-earnings": {
+        "zh": "算出上个月每个商品扣掉费用和成本后赚了多少。"
+      },
+      "settlement-check": {
+        "zh": "把最近一期结算和回款对上，说清每笔差额。"
+      },
+      "refunds-review": {
+        "zh": "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。"
       }
     },
     "builds": [
-      "REPLACE"
+      {
+        "on": "cx-amazon-sp-api",
+        "need": "required"
+      },
+      {
+        "on": "@comchatx/cx-amazon-ads",
+        "need": "optional"
+      }
     ]
   },
   "devDependencies": {
+    "@earendil-works/pi-ai": "1.5.0",
     "@earendil-works/pi-coding-agent": "1.5.0",
     "@types/node": "26.2.0",
     "typescript": "7.0.2",
