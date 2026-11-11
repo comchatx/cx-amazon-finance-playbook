@@ -38,10 +38,10 @@ it("every directory under skills/ holds a SKILL.md and no script: the call is th
 
 it("each template expands in a pi session: its arguments and the seller's own words reach the model, no placeholder does", async () => {
   const expected: Record<(typeof PROMPTS)[number], [string, string]> = {
-    "money-where": ["/money-where 只看欧洲站", "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout reaches my bank. 只看欧洲站"],
+    "money-where": ["/money-where 只看欧洲站", "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due. 只看欧洲站"],
     "fees-review": ["/fees-review 2026-10 SKU-1", "Show me which fees Amazon took from me last month, how each one was worked out, and what changed against the months before. 2026-10 SKU-1"],
-    "product-earnings": ["/product-earnings", "Work out what each of my products earned on Amazon last month, after all of Amazon's fees and my own costs."],
-    "settlement-check": ["/settlement-check DE 到账少了", "Match my latest Amazon settlement to the money that reached my bank, and explain where each difference comes from. DE 到账少了"],
+    "product-earnings": ["/product-earnings", "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find."],
+    "settlement-check": ["/settlement-check DE 到账少了", "Match my latest Amazon settlement to its payout, and explain where each difference comes from. DE 到账少了"],
     "refunds-review": ["/refunds-review 2026-10", "Show me last month's refunds, reimbursements and adjustments, how much each came to, and which orders or shipments each ties back to. 2026-10"],
   };
   for (const [name, [input, text]] of Object.entries(expected)) {
@@ -85,11 +85,11 @@ const SKILL_WORDS = {
   "money-reads": { zh: "说明每项财务数据从哪读、多久更新。", en: "Where each money figure is read, and how late it lands." },
 } as const;
 const PROMPT_WORDS = {
-  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where your Amazon money is now and when the next payout is due." },
-  "fees-review": { zh: "查看上个月亚马逊扣的费用、算法和变化。", en: "See which fees Amazon took last month, how each was worked out, and what changed." },
-  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and your costs." },
-  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match your latest settlement to its payout, and explain each difference." },
-  "refunds-review": { zh: "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。", en: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to." },
+  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where your Amazon money is now and when the next payout is due.", body: "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due." },
+  "fees-review": { zh: "查看上个月亚马逊扣的费用、算法和变化。", en: "See which fees Amazon took last month, how each was worked out, and what changed.", body: "Show me which fees Amazon took from me last month, how each one was worked out, and what changed against the months before." },
+  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and your costs.", body: "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find." },
+  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match your latest settlement to its payout, and explain each difference.", body: "Match my latest Amazon settlement to its payout, and explain where each difference comes from." },
+  "refunds-review": { zh: "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。", en: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to.", body: "Show me last month's refunds, reimbursements and adjustments, how much each came to, and which orders or shipments each ties back to." },
 } as const;
 /** The signed Overview, each README whole. */
 const OVERVIEW = {
@@ -104,7 +104,7 @@ it("the card's name and line are the signed ones: comchatx.name, npm's descripti
   expect(pkg.comchatx.about).toBe(CARD.zh);
 });
 
-it("each template's English description and Chinese words are the signed ones, with no person and no slash command in the Chinese", () => {
+it("each template's English description, Chinese words and body are the signed ones, with no person and no slash command in the Chinese", () => {
   const { comchatx } = manifest() as { comchatx: { prompts: Record<string, unknown> } };
   expect(Object.keys(comchatx.prompts).sort()).toEqual([...PROMPTS]);
   for (const name of PROMPTS) {
@@ -112,6 +112,7 @@ it("each template's English description and Chinese words are the signed ones, w
     expect(PROMPT_WORDS[name].zh, name).not.toMatch(/我|\//);
     const front = readFileSync(join(ROOT, "prompts", `${name}.md`), "utf8").match(/^description: (".*")$/m);
     expect(JSON.parse(front![1]!), name).toBe(PROMPT_WORDS[name].en);
+    expect(readFileSync(join(ROOT, "prompts", `${name}.md`), "utf8").split("---\n")[2], name).toBe(`${PROMPT_WORDS[name].body} $@\n`);
   }
 });
 
