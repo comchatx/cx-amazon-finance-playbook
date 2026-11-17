@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-amazon-finance-playbook",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ties out your Amazon payouts, and each product's profit.",
   "license": "MIT",
   "author": "ComChatX",
@@ -34,6 +34,7 @@
   },
   "comchatx": {
     "name": "Amazon Finance Playbook",
+    "nameZh": "亚马逊财务分析手册",
     "about": "对上亚马逊每期结算和回款，算出每个商品的利润。",
     "mark": {
       "line": "table"

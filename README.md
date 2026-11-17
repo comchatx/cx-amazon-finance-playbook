@@ -11,4 +11,4 @@ To see what holding stock costs and when to restock, also install cx-amazon-stoc
 ## What it uses
 
 - **Amazon SP-API:** your Amazon selling account, connected on the Amazon SP-API plugin. cx reads your transactions, settlements, payouts and fees there.
-- **Amazon Ads,** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.
+- **Amazon Ads API,** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.
