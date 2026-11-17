@@ -6,7 +6,7 @@ cx 把亚马逊的每期结算和回款对上，说清每笔差额从哪来；�
 - 上个月亚马逊为什么扣了我信用卡里的钱？
 - 德国站结算里哪些行带增值税，由谁缴？
 
-如果想知道库存压着要花多少钱、什么时候该补货，再装上 cx-amazon-stock-playbook。
+如果想知道库存压着要花多少钱、什么时候该补货，再装上[亚马逊库存分析手册](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook)。
 
 ## 用到的数据
 

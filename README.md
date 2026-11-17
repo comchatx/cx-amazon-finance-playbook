@@ -6,7 +6,7 @@ Some things you can ask:
 - Why did Amazon charge my card last month?
 - Which lines on my German settlement carry VAT, and who pays it?
 
-To see what holding stock costs and when to restock, also install cx-amazon-stock-playbook.
+To see what holding stock costs and when to restock, also install [Amazon Stock Playbook](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook).
 
 ## What it uses
 
