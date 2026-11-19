@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-amazon-finance-playbook",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Ties out your Amazon payouts, and each product's profit.",
   "license": "MIT",
   "author": "ComChatX",
@@ -95,7 +95,27 @@
       },
       {
         "on": "@comchatx/cx-amazon-ads",
-        "need": "optional"
+        "need": "optional",
+        "why": {
+          "en": "Fills in each product's ad spend Amazon leaves out.",
+          "zh": "用于补上亚马逊读不到的单品广告花费。"
+        }
+      },
+      {
+        "on": "@comchatx/cx-amazon-stock-playbook",
+        "need": "optional",
+        "why": {
+          "en": "Shows stock costs and when to restock.",
+          "zh": "用于看清库存压着要花多少钱、什么时候该补货。"
+        }
+      },
+      {
+        "on": "cx-amazon-seller",
+        "need": "optional",
+        "why": {
+          "en": "Tells cx from the start that you sell on Amazon.",
+          "zh": "用于让 cx 从第一条消息起就知道你在亚马逊开店。"
+        }
       }
     ]
   },
