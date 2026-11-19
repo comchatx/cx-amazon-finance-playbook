@@ -96,6 +96,10 @@
       {
         "on": "@comchatx/cx-amazon-ads",
         "need": "optional"
+      },
+      {
+        "on": "cx-amazon-seller",
+        "need": "required"
       }
     ]
   },

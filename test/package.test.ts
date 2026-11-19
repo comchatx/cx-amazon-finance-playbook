@@ -124,6 +124,7 @@ it("the Plugins page's field gives every skill its signed words in both language
   expect(comchatx.builds).toEqual([
     { on: "cx-amazon-sp-api", need: "required" },
     { on: "@comchatx/cx-amazon-ads", need: "optional" },
+    { on: "cx-amazon-seller", need: "required" },
   ]);
 });
 
