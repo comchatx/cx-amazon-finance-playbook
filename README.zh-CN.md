@@ -6,9 +6,6 @@ cx 把亚马逊的每期结算和回款对上，说清每笔差额从哪来；�
 - 上个月亚马逊为什么扣了我信用卡里的钱？
 - 德国站结算里哪些行带增值税，由谁缴？
 
-如果想知道库存压着要花多少钱、什么时候该补货，再装上[亚马逊库存分析手册](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook)。
-
 ## 用到的数据
 
-- **[亚马逊卖家接口](https://www.npmjs.com/package/cx-amazon-sp-api)**：你的亚马逊卖家账户，在亚马逊卖家接口插件里连接。cx 在这里读取交易、结算、回款和费用。
-- **[亚马逊广告接口](https://www.npmjs.com/package/@comchatx/cx-amazon-ads)**（如果你装了）：亚马逊的单品数据读不到时，cx 从这里读每个商品的广告花费。
+- **你的亚马逊卖家账户**：cx 在这里读取交易、结算、回款和费用。

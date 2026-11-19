@@ -85,16 +85,16 @@ const SKILL_WORDS = {
   "money-reads": { zh: "说明每项财务数据从哪读、多久更新。", en: "Where each money figure is read, and how late it lands." },
 } as const;
 const PROMPT_WORDS = {
-  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where your Amazon money is now and when the next payout is due.", body: "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due." },
+  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where my Amazon money is now and when the next payout is due.", body: "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due." },
   "fees-review": { zh: "查看上个月亚马逊扣的费用、算法和变化。", en: "See which fees Amazon took last month, how each was worked out, and what changed.", body: "Show me which fees Amazon took from me last month, how each one was worked out, and what changed against the months before." },
-  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and your costs.", body: "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find." },
-  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match your latest settlement to its payout, and explain each difference.", body: "Match my latest Amazon settlement to its payout, and explain where each difference comes from." },
+  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and my costs.", body: "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find." },
+  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match my latest settlement to its payout, and explain each difference.", body: "Match my latest Amazon settlement to its payout, and explain where each difference comes from." },
   "refunds-review": { zh: "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。", en: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to.", body: "Show me last month's refunds, reimbursements and adjustments, how much each came to, and which orders or shipments each ties back to." },
 } as const;
 /** The signed Overview, each README whole. */
 const OVERVIEW = {
-  "README.md": "cx matches each Amazon settlement to its payout and explains each difference, then works out each product's profit after Amazon's fees and your costs, as entered at Amazon or told to cx, in every marketplace you connected.\n\nSome things you can ask:\n\n- Why was my last payout so much lower than my sales?\n- Why did Amazon charge my card last month?\n- Which lines on my German settlement carry VAT, and who pays it?\n\nTo see what holding stock costs and when to restock, also install [Amazon Stock Playbook](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook).\n\n## What it uses\n\n- **[Amazon SP-API](https://www.npmjs.com/package/cx-amazon-sp-api):** your Amazon selling account, connected on the Amazon SP-API plugin. cx reads your transactions, settlements, payouts and fees there.\n- **[Amazon Ads API](https://www.npmjs.com/package/@comchatx/cx-amazon-ads),** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.\n",
-  "README.zh-CN.md": "cx 把亚马逊的每期结算和回款对上，说清每笔差额从哪来；再扣掉亚马逊的各项费用和你的成本，算出每个商品赚了多少。成本用你在亚马逊后台填写的，或你告诉 cx 的。cx 读取你连接的每个站点的交易、费用、退款、赔偿和结算。\n\n你可以这样问：\n\n- 为什么上一笔回款比销售额少这么多？\n- 上个月亚马逊为什么扣了我信用卡里的钱？\n- 德国站结算里哪些行带增值税，由谁缴？\n\n如果想知道库存压着要花多少钱、什么时候该补货，再装上[亚马逊库存分析手册](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook)。\n\n## 用到的数据\n\n- **[亚马逊卖家接口](https://www.npmjs.com/package/cx-amazon-sp-api)**：你的亚马逊卖家账户，在亚马逊卖家接口插件里连接。cx 在这里读取交易、结算、回款和费用。\n- **[亚马逊广告接口](https://www.npmjs.com/package/@comchatx/cx-amazon-ads)**（如果你装了）：亚马逊的单品数据读不到时，cx 从这里读每个商品的广告花费。\n",
+  "README.md": "cx matches each Amazon settlement to its payout and explains each difference, then works out each product's profit after Amazon's fees and your costs, as entered at Amazon or told to cx, in every marketplace you connected.\n\nSome things you can ask:\n\n- Why was my last payout so much lower than my sales?\n- Why did Amazon charge my card last month?\n- Which lines on my German settlement carry VAT, and who pays it?\n\n## What it uses\n\n- **Your Amazon seller account:** cx reads your transactions, settlements, payouts and fees there.\n",
+  "README.zh-CN.md": "cx 把亚马逊的每期结算和回款对上，说清每笔差额从哪来；再扣掉亚马逊的各项费用和你的成本，算出每个商品赚了多少。成本用你在亚马逊后台填写的，或你告诉 cx 的。cx 读取你连接的每个站点的交易、费用、退款、赔偿和结算。\n\n你可以这样问：\n\n- 为什么上一笔回款比销售额少这么多？\n- 上个月亚马逊为什么扣了我信用卡里的钱？\n- 德国站结算里哪些行带增值税，由谁缴？\n\n## 用到的数据\n\n- **你的亚马逊卖家账户**：cx 在这里读取交易、结算、回款和费用。\n",
 } as const;
 
 it("the card's name and line are the signed ones: comchatx.name, npm's description in English, comchatx.about in Chinese", () => {
@@ -123,7 +123,9 @@ it("the Plugins page's field gives every skill its signed words in both language
   for (const name of SKILLS) expect(comchatx.skills[name], name).toEqual(SKILL_WORDS[name]);
   expect(comchatx.builds).toEqual([
     { on: "cx-amazon-sp-api", need: "required" },
-    { on: "@comchatx/cx-amazon-ads", need: "optional" },
+    { on: "@comchatx/cx-amazon-ads", need: "optional", why: { en: "Fills in each product's ad spend Amazon leaves out.", zh: "用于补上亚马逊读不到的单品广告花费。" } },
+    { on: "@comchatx/cx-amazon-stock-playbook", need: "optional", why: { en: "Shows stock costs and when to restock.", zh: "用于看清库存压着要花多少钱、什么时候该补货。" } },
+    { on: "cx-amazon-seller", need: "optional", why: { en: "Tells cx from the start that you sell on Amazon.", zh: "用于让 cx 从第一条消息起就知道你在亚马逊开店。" } },
   ]);
 });
 

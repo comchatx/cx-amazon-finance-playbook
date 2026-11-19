@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- The README no longer names another plugin; what the playbook builds on is its `comchatx.builds`, each with its reason, as signed on 2026-11-18. The sentence "To see what holding stock costs and when to restock, also install [Amazon Stock Playbook](…)." and its Chinese are gone; `@comchatx/cx-amazon-stock-playbook` is an optional entry with the reason 「用于看清库存压着要花多少钱、什么时候该补货。」 / "Shows stock costs and when to restock."
+- "What it uses" names the account, not the plugin: 「**你的亚马逊卖家账户**：cx 在这里读取交易、结算、回款和费用。」 / "**Your Amazon seller account:** cx reads your transactions, settlements, payouts and fees there." Its Amazon Ads line is gone; the `@comchatx/cx-amazon-ads` entry carries the reason 「用于补上亚马逊读不到的单品广告花费。」 / "Fills in each product's ad spend Amazon leaves out."
+- `cx-amazon-seller` is a new optional entry, with the reason 「用于让 cx 从第一条消息起就知道你在亚马逊开店。」 / "Tells cx from the start that you sell on Amazon."
+- Three templates' English reads as the seller's own message, as signed on 2026-11-17: `money-where`, `product-earnings` and `settlement-check` say "my" where they said "your". Their Chinese, and the other two templates, stay.
+
 ## 0.1.1
 
 - The card's name is the one signed on 2026-11-17: "Amazon Finance Playbook" on the English page (`comchatx.name`) and 「亚马逊财务分析手册」 on the Chinese page (`comchatx.nameZh`).
