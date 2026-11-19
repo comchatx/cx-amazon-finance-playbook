@@ -6,9 +6,9 @@ Some things you can ask:
 - Why did Amazon charge my card last month?
 - Which lines on my German settlement carry VAT, and who pays it?
 
-To see what holding stock costs and when to restock, also install cx-amazon-stock-playbook.
+To see what holding stock costs and when to restock, also install [Amazon Stock Playbook](https://www.npmjs.com/package/@comchatx/cx-amazon-stock-playbook).
 
 ## What it uses
 
-- **Amazon SP-API:** your Amazon selling account, connected on the Amazon SP-API plugin. cx reads your transactions, settlements, payouts and fees there.
-- **Amazon Ads,** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.
+- **[Amazon SP-API](https://www.npmjs.com/package/cx-amazon-sp-api):** your Amazon selling account, connected on the Amazon SP-API plugin. cx reads your transactions, settlements, payouts and fees there.
+- **[Amazon Ads API](https://www.npmjs.com/package/@comchatx/cx-amazon-ads),** where you have it: where Amazon's per-product figures cannot be read, cx reads each product's ad spend here.
