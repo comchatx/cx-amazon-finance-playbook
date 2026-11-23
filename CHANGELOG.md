@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- The tile's mark on the Plugins page is the signed drawing.
+
 ## 0.1.3
 
 - Each template's body is its description, word for word, then the seller's own words: `money-where`, `fees-review`, `product-earnings`, `settlement-check` and `refunds-review`. Typing `/money-where` sends "See where my Amazon money is now and when the next payout is due."; typing `/money-where 只看欧洲站` sends that sentence, then 「只看欧洲站」.
