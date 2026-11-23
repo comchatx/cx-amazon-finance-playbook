@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Each template's body is its description, word for word, then the seller's own words: `money-where`, `fees-review`, `product-earnings`, `settlement-check` and `refunds-review`. Typing `/money-where` sends "See where my Amazon money is now and when the next payout is due."; typing `/money-where 只看欧洲站` sends that sentence, then 「只看欧洲站」.
+
 ## 0.1.2
 
 - The README no longer names another plugin; what the playbook builds on is its `comchatx.builds`, each with its reason, as signed on 2026-11-18. The sentence "To see what holding stock costs and when to restock, also install [Amazon Stock Playbook](…)." and its Chinese are gone; `@comchatx/cx-amazon-stock-playbook` is an optional entry with the reason 「用于看清库存压着要花多少钱、什么时候该补货。」 / "Shows stock costs and when to restock."

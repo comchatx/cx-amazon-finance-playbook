@@ -38,11 +38,11 @@ it("every directory under skills/ holds a SKILL.md and no script: the call is th
 
 it("each template expands in a pi session: its arguments and the seller's own words reach the model, no placeholder does", async () => {
   const expected: Record<(typeof PROMPTS)[number], [string, string]> = {
-    "money-where": ["/money-where 只看欧洲站", "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due. 只看欧洲站"],
-    "fees-review": ["/fees-review 2026-10 SKU-1", "Show me which fees Amazon took from me last month, how each one was worked out, and what changed against the months before. 2026-10 SKU-1"],
-    "product-earnings": ["/product-earnings", "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find."],
-    "settlement-check": ["/settlement-check DE 到账少了", "Match my latest Amazon settlement to its payout, and explain where each difference comes from. DE 到账少了"],
-    "refunds-review": ["/refunds-review 2026-10", "Show me last month's refunds, reimbursements and adjustments, how much each came to, and which orders or shipments each ties back to. 2026-10"],
+    "money-where": ["/money-where 只看欧洲站", `${PROMPT_WORDS["money-where"].body} 只看欧洲站`],
+    "fees-review": ["/fees-review 2026-10 SKU-1", `${PROMPT_WORDS["fees-review"].body} 2026-10 SKU-1`],
+    "product-earnings": ["/product-earnings", PROMPT_WORDS["product-earnings"].body],
+    "settlement-check": ["/settlement-check DE 到账少了", `${PROMPT_WORDS["settlement-check"].body} DE 到账少了`],
+    "refunds-review": ["/refunds-review 2026-10", `${PROMPT_WORDS["refunds-review"].body} 2026-10`],
   };
   for (const [name, [input, text]] of Object.entries(expected)) {
     const received = await typed(ROOT, input);
@@ -85,11 +85,11 @@ const SKILL_WORDS = {
   "money-reads": { zh: "说明每项财务数据从哪读、多久更新。", en: "Where each money figure is read, and how late it lands." },
 } as const;
 const PROMPT_WORDS = {
-  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where my Amazon money is now and when the next payout is due.", body: "Tell me where my Amazon money is now: how much is available, how much is deferred and how much is held in reserve, and when my next payout is due." },
-  "fees-review": { zh: "查看上个月亚马逊扣的费用、算法和变化。", en: "See which fees Amazon took last month, how each was worked out, and what changed.", body: "Show me which fees Amazon took from me last month, how each one was worked out, and what changed against the months before." },
-  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and my costs.", body: "Work out what each of my products earned on Amazon last month, after Amazon's fees and my own costs, and ask me for any cost you cannot find." },
-  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match my latest settlement to its payout, and explain each difference.", body: "Match my latest Amazon settlement to its payout, and explain where each difference comes from." },
-  "refunds-review": { zh: "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。", en: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to.", body: "Show me last month's refunds, reimbursements and adjustments, how much each came to, and which orders or shipments each ties back to." },
+  "money-where": { zh: "看看亚马逊的钱在哪，下一笔回款哪天发出。", en: "See where my Amazon money is now and when the next payout is due.", body: "See where my Amazon money is now and when the next payout is due." },
+  "fees-review": { zh: "查看上个月亚马逊扣的费用、算法和变化。", en: "See which fees Amazon took last month, how each was worked out, and what changed.", body: "See which fees Amazon took last month, how each was worked out, and what changed." },
+  "product-earnings": { zh: "算出上个月每个商品扣掉费用和成本后赚了多少。", en: "Work out what each product earned last month after Amazon's fees and my costs.", body: "Work out what each product earned last month after Amazon's fees and my costs." },
+  "settlement-check": { zh: "把最近一期结算和回款对上，说清每笔差额。", en: "Match my latest settlement to its payout, and explain each difference.", body: "Match my latest settlement to its payout, and explain each difference." },
+  "refunds-review": { zh: "查看上个月的退款、赔偿和调整，各对应哪个订单或货件。", en: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to.", body: "See last month's refunds, reimbursements and adjustments, and the orders or shipments each ties to." },
 } as const;
 /** The signed Overview, each README whole. */
 const OVERVIEW = {
@@ -114,6 +114,14 @@ it("each template's English description, Chinese words and body are the signed o
     const front = readFileSync(join(ROOT, "prompts", `${name}.md`), "utf8").match(/^description: (".*")$/m);
     expect(JSON.parse(front![1]!), name).toBe(PROMPT_WORDS[name].en);
     expect(readFileSync(join(ROOT, "prompts", `${name}.md`), "utf8").split("---\n")[2], name).toBe(`${PROMPT_WORDS[name].body} $@\n`);
+  }
+});
+
+it("each template's body is its description word for word, then the seller's own words", () => {
+  for (const name of PROMPTS) {
+    const text = readFileSync(join(ROOT, "prompts", `${name}.md`), "utf8");
+    const description = /^description: "(.*)"$/m.exec(text)?.[1];
+    expect(text.replace(/^---\n[\s\S]*?\n---\n/, ""), name).toBe(`${description} $@\n`);
   }
 });
 
