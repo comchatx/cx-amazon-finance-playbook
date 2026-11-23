@@ -1,6 +1,6 @@
 {
   "name": "@comchatx/cx-amazon-finance-playbook",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Ties out your Amazon payouts, and each product's profit.",
   "license": "MIT",
   "author": "ComChatX",
